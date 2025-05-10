@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { AppMode, RideOffer, SearchCriteria, PostRideData, TransitSuggestion } from '@/types';
 
@@ -146,6 +145,109 @@ export const mockRides: RideOffer[] = [
     rating: 4.6,
     transitSuggestion: transitSuggestions[1] // Red Line Metro from Dubai Mall to Internet City
   },
+  // New fake rides for pitch presentation
+  {
+    id: '6',
+    driverName: 'Noor',
+    startLocation: dubaiLocations[9], // Downtown Dubai
+    endLocation: dubaiLocations[2], // Palm Jumeirah
+    departureTime: '08:45',
+    passengerCapacity: 4,
+    availableSeats: 2,
+    cost: 25,
+    estimatedDuration: 30,
+    distance: 16.7,
+    carType: 'Tesla Model 3',
+    rating: 4.9,
+    transitSuggestion: transitSuggestions[2] // Bus 28 from Palm Jumeirah to Dubai Marina
+  },
+  {
+    id: '7',
+    driverName: 'Rashid',
+    startLocation: dubaiLocations[8], // Business Bay
+    endLocation: dubaiLocations[0], // Dubai Marina
+    departureTime: '09:30',
+    passengerCapacity: 5,
+    availableSeats: 4,
+    cost: 15,
+    estimatedDuration: 28,
+    distance: 18.2,
+    carType: 'SUV',
+    rating: 4.7,
+    transitSuggestion: transitSuggestions[4] // Metro Red Line from Business Bay to Dubai Marina
+  },
+  {
+    id: '8',
+    driverName: 'Layla',
+    startLocation: dubaiLocations[10], // Al Quoz
+    endLocation: dubaiLocations[3], // Dubai Mall
+    departureTime: '08:30',
+    passengerCapacity: 3,
+    availableSeats: 3,
+    cost: 12,
+    estimatedDuration: 15,
+    distance: 9.5,
+    carType: 'Hybrid',
+    rating: 4.8,
+    transitSuggestion: transitSuggestions[0] // Bus 50 from Business Bay to Al Quoz
+  },
+  {
+    id: '9',
+    driverName: 'Omar',
+    startLocation: dubaiLocations[11], // Dubai Internet City
+    endLocation: dubaiLocations[9], // Downtown Dubai
+    departureTime: '10:00',
+    passengerCapacity: 4,
+    availableSeats: 1,
+    cost: 18,
+    estimatedDuration: 25,
+    distance: 15.3,
+    carType: 'Luxury Sedan',
+    rating: 4.9
+  },
+  {
+    id: '10',
+    driverName: 'Aisha',
+    startLocation: dubaiLocations[6], // DIFC
+    endLocation: dubaiLocations[7], // Deira
+    departureTime: '09:45',
+    passengerCapacity: 3,
+    availableSeats: 2,
+    cost: 22,
+    estimatedDuration: 20,
+    distance: 10.8,
+    carType: 'Electric',
+    rating: 5.0,
+    transitSuggestion: transitSuggestions[3] // Bus 36A from DIFC to Dubai Mall
+  },
+  {
+    id: '11',
+    driverName: 'Yousef',
+    startLocation: dubaiLocations[4], // JVC
+    endLocation: dubaiLocations[8], // Business Bay
+    departureTime: '08:00',
+    passengerCapacity: 3,
+    availableSeats: 3,
+    cost: 16,
+    estimatedDuration: 22,
+    distance: 14.2,
+    carType: 'Sedan',
+    rating: 4.6
+  },
+  {
+    id: '12',
+    driverName: 'Mariam',
+    startLocation: dubaiLocations[0], // Dubai Marina
+    endLocation: dubaiLocations[6], // DIFC
+    departureTime: '09:15',
+    passengerCapacity: 2,
+    availableSeats: 1,
+    cost: 24,
+    estimatedDuration: 30,
+    distance: 19.5,
+    carType: 'Sports Car',
+    rating: 4.7
+  }
 ];
 
 interface AppContextValue {

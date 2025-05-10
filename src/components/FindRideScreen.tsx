@@ -30,6 +30,7 @@ const FindRideScreen: React.FC = () => {
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [demoMode, setDemoMode] = useState(false); // For presentation purposes
 
   // Effect to update search results when lastPostedRide changes
   useEffect(() => {
@@ -62,13 +63,30 @@ const FindRideScreen: React.FC = () => {
       availableRides.unshift(postedRide); // Add to the beginning of the array
     }
     
-    // Filter rides based on search criteria
-    setSearchResults(availableRides.filter(ride => 
-      (ride.startLocation.name === searchCriteria.startLocation?.name ||
-       ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
-      (ride.endLocation.name === searchCriteria.endLocation?.name ||
-       ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
-    ));
+    if (demoMode) {
+      // For demo/pitch, show filtered results or all results
+      if (searchCriteria.startLocation || searchCriteria.endLocation) {
+        setSearchResults(availableRides.filter(ride => 
+          (!searchCriteria.startLocation || 
+           ride.startLocation.name === searchCriteria.startLocation?.name ||
+           ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
+          (!searchCriteria.endLocation || 
+           ride.endLocation.name === searchCriteria.endLocation?.name ||
+           ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
+        ));
+      } else {
+        // If no search criteria, show all rides for demo
+        setSearchResults(availableRides);
+      }
+    } else {
+      // Normal search with strict criteria
+      setSearchResults(availableRides.filter(ride => 
+        (ride.startLocation.name === searchCriteria.startLocation?.name ||
+         ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
+        (ride.endLocation.name === searchCriteria.endLocation?.name ||
+         ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
+      ));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,12 +95,14 @@ const FindRideScreen: React.FC = () => {
     // Validate form
     const newErrors: Record<string, string> = {};
     
-    if (!searchCriteria.startLocation) {
-      newErrors.startLocation = 'Starting location is required';
-    }
-    
-    if (!searchCriteria.endLocation) {
-      newErrors.endLocation = 'Destination location is required';
+    if (!demoMode) {
+      if (!searchCriteria.startLocation) {
+        newErrors.startLocation = 'Starting location is required';
+      }
+      
+      if (!searchCriteria.endLocation) {
+        newErrors.endLocation = 'Destination location is required';
+      }
     }
     
     setErrors(newErrors);
@@ -94,6 +114,15 @@ const FindRideScreen: React.FC = () => {
     }
   };
 
+  // Toggle demo mode for presentations
+  const toggleDemoMode = () => {
+    setDemoMode(!demoMode);
+    if (!demoMode) {
+      // When enabling demo mode, clear any errors
+      setErrors({});
+    }
+  };
+
   // If a ride is selected, show the ride details screen
   if (selectedRide) {
     return <RideDetailsScreen />;
@@ -102,16 +131,28 @@ const FindRideScreen: React.FC = () => {
   return (
     <div className="relative h-full flex flex-col">
       {/* Header */}
-      <div className="z-30 p-4 flex items-center bg-white/90 shadow-sm">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="mr-2"
-          onClick={() => setMode('home')}
+      <div className="z-30 p-4 flex items-center justify-between bg-white/90 shadow-sm">
+        <div className="flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="mr-2"
+            onClick={() => setMode('home')}
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <h1 className="font-medium text-lg">Find a Ride</h1>
+        </div>
+        
+        {/* Demo Mode Toggle for Pitch Presentation */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleDemoMode}
+          className={`text-xs ${demoMode ? 'bg-maps-green text-white' : ''}`}
         >
-          <ArrowLeft className="h-5 w-5" />
+          {demoMode ? '🎬 Demo Mode On' : '🎬 Demo Mode'}
         </Button>
-        <h1 className="font-medium text-lg">Find a Ride</h1>
       </div>
 
       {/* Form Card */}
