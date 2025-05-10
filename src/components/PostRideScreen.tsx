@@ -131,7 +131,7 @@ const PostRideScreen: React.FC = () => {
           </div>
           
           <div>
-            <Label htmlFor="departureTime" className="text-sm font-medium text-appTextSecondary mb-1 block">Departure Time (Optional)</Label>
+            <Label htmlFor="departureTime" className="text-sm font-medium text-appTextSecondary mb-1 block">Departure Time</Label>
             <div className="relative">
               <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-appTextSecondary" />
               <Input id="departureTime" type="time" value={postRideData.departureTime || ''}
