@@ -1,19 +1,18 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { AppMode, RideOffer, SearchCriteria, PostRideData } from '@/types';
 
 // Mock data for Dubai locations
 export const dubaiLocations = [
-  { name: 'Dubai Marina', coordinates: [55.1304, 25.0750] },
-  { name: 'Burj Khalifa', coordinates: [55.2743, 25.1972] },
-  { name: 'Palm Jumeirah', coordinates: [55.1184, 25.1124] },
-  { name: 'Dubai Mall', coordinates: [55.2798, 25.1975] },
-  { name: 'JVC (Jumeirah Village Circle)', coordinates: [55.2110, 25.0657] },
-  { name: 'Al Barsha', coordinates: [55.2098, 25.1112] },
-  { name: 'DIFC', coordinates: [55.2840, 25.2149] },
-  { name: 'Deira', coordinates: [55.3075, 25.2697] },
-  { name: 'Business Bay', coordinates: [55.2627, 25.1851] },
-  { name: 'Downtown Dubai', coordinates: [55.2735, 25.1933] },
+  { name: 'Dubai Marina', coordinates: [55.1304, 25.0750] as [number, number] },
+  { name: 'Burj Khalifa', coordinates: [55.2743, 25.1972] as [number, number] },
+  { name: 'Palm Jumeirah', coordinates: [55.1184, 25.1124] as [number, number] },
+  { name: 'Dubai Mall', coordinates: [55.2798, 25.1975] as [number, number] },
+  { name: 'JVC (Jumeirah Village Circle)', coordinates: [55.2110, 25.0657] as [number, number] },
+  { name: 'Al Barsha', coordinates: [55.2098, 25.1112] as [number, number] },
+  { name: 'DIFC', coordinates: [55.2840, 25.2149] as [number, number] },
+  { name: 'Deira', coordinates: [55.3075, 25.2697] as [number, number] },
+  { name: 'Business Bay', coordinates: [55.2627, 25.1851] as [number, number] },
+  { name: 'Downtown Dubai', coordinates: [55.2735, 25.1933] as [number, number] },
 ];
 
 // Mock data for available rides

@@ -63,7 +63,10 @@ const LocationInput: React.FC<LocationInputProps> = ({
                 key={location.name}
                 value={location.name}
                 onSelect={() => {
-                  onChange(location);
+                  onChange({
+                    name: location.name,
+                    coordinates: location.coordinates as [number, number] 
+                  });
                   setOpen(false);
                 }}
                 className="flex items-center"
