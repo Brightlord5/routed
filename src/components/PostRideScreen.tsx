@@ -32,9 +32,27 @@ const PostRideScreen: React.FC = () => {
       if (newRide) {
         setLastPostedRide({...postRideData});
         setRidePosted(true);
-        toast.success("Ride posted successfully!", { description: "Your ride is now visible to others." });
+        toast.success("Ride posted successfully!", { 
+          description: "Your ride is now visible to others.",
+          style: {
+            background: '#2D3748', // Solid appCard color
+            color: '#E2E8F0', // Solid appText color
+            border: '1px solid #4A5568', // Solid appBorder color
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Add stronger shadow
+            fontWeight: '500' // Make text slightly bolder
+          }
+        });
       } else {
-        toast.error("Failed to post ride", { description: "Please check your details and try again." });
+        toast.error("Failed to post ride", { 
+          description: "Please check your details and try again.",
+          style: {
+            background: '#2D3748', // Solid appCard color
+            color: '#E2E8F0', // Solid appText color
+            border: '1px solid #4A5568', // Solid appBorder color with red tint
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Add stronger shadow
+            fontWeight: '500' // Make text slightly bolder
+          }
+        });
       }
     }
   };

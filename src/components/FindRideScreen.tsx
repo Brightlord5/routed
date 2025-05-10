@@ -46,19 +46,35 @@ const FindRideScreen: React.FC = () => {
     performSearch();
     setShowFilters(false); // Hide filters after search
     toast.success("Search updated!", {
-      description: searchResults.length > 0 ? `Found ${searchResults.length} rides.` : "No rides match your criteria."
+      description: searchResults.length > 0 ? `Found ${searchResults.length} rides.` : "No rides match your criteria.",
+      style: {
+        background: '#2D3748', // Solid appCard color
+        color: '#E2E8F0', // Solid appText color
+        border: '1px solid #4A5568', // Solid appBorder color
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Add stronger shadow
+        fontWeight: '500' // Make text slightly bolder
+      }
     });
   };
   
   const handleSortChange = (newSortOption: SortOption) => {
     setSortOption(newSortOption);
     performSearch(newSortOption);
+    
+    const toastStyle = {
+      background: '#2D3748', // Solid appCard color
+      color: '#E2E8F0', // Solid appText color
+      border: '1px solid #4A5568', // Solid appBorder color
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)', // Add stronger shadow
+      fontWeight: '500' // Make text slightly bolder
+    };
+    
     if (newSortOption === 'fastest') {
-      toast.success("Sorted by fastest travel time");
+      toast.success("Sorted by fastest travel time", { style: toastStyle });
     } else if (newSortOption === 'cheapest') {
-      toast.success("Sorted by lowest price");
+      toast.success("Sorted by lowest price", { style: toastStyle });
     } else {
-      toast.info("Showing all available rides");
+      toast.info("Showing all available rides", { style: toastStyle });
     }
   };
 

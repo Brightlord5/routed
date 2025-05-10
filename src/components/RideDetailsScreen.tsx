@@ -14,9 +14,11 @@ const RideDetailsScreen: React.FC = () => {
     toast.success("Ride booked successfully!", {
       description: `You've booked a ride with ${selectedRide.driverName}. Details sent to your notifications.`,
       style: {
-        background: 'var(--appCard)',
-        color: 'var(--appText)',
-        border: '1px solid var(--appBorder)'
+        background: '#2D3748',
+        color: '#E2E8F0',
+        border: '1px solid #4A5568',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+        fontWeight: '500'
       }
     });
     // setTimeout(() => {
