@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,7 @@ const HomeScreen: React.FC = () => {
         <div className="flex items-center">
           <Menu className="h-6 w-6 text-maps-text mr-3" />
           <h1 className="font-medium text-xl bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">
-            Dubai Carpooling
+            Dubai Ride Share
           </h1>
         </div>
         
@@ -28,32 +27,35 @@ const HomeScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Welcome Overlay */}
-      <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] z-30 bg-white/80 backdrop-blur-md p-7 rounded-xl shadow-xl text-center animate-fade-in border border-white/30">
-        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">
-          Discover Your Ride in Dubai!
+      {/* Welcome Overlay - Minimalist Design */}
+      <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[85%] z-30 
+                      bg-white/80 backdrop-blur-md p-7 rounded-xl shadow-xl text-center 
+                      animate-fade-in border border-white/30">
+        <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">
+          Dubai Ride Share
         </h2>
         <p className="text-maps-secondaryText mb-6 leading-relaxed">
-          Join our community to save money, reduce traffic, and make connections with public transport integrations.
+          Seamless rides with public transport connections
         </p>
         
         <div className="flex flex-col gap-4">
           <Button 
-            className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white h-14
-                      shadow-md hover:shadow-lg transform transition-all duration-300 hover:scale-[1.02]"
+            className="bg-white border border-maps-blue/20 hover:bg-maps-blue/5 text-maps-blue h-14
+                      shadow-sm hover:shadow-md transform transition-all duration-300 hover:scale-[1.02]
+                      flex items-center justify-center group"
             onClick={() => setMode('find')}
           >
-            <Search className="h-5 w-5 mr-2" />
-            Find a Ride
+            <Search className="h-5 w-5 mr-2 text-maps-blue group-hover:text-maps-blue/80 transition-colors" />
+            <span className="font-medium">Find a Ride</span>
           </Button>
           
           <Button 
-            className="bg-gradient-to-r from-maps-blue to-blue-600 hover:from-maps-blue hover:to-blue-700 text-white h-14 
+            className="bg-maps-blue hover:bg-maps-blue/90 text-white h-14 
                       shadow-md hover:shadow-lg transform transition-all duration-300 hover:scale-[1.02]"
             onClick={() => setMode('post')}
           >
             <Car className="h-5 w-5 mr-2" />
-            Post a Ride
+            <span className="font-medium">Post a Ride</span>
           </Button>
         </div>
       </div>
@@ -62,15 +64,15 @@ const HomeScreen: React.FC = () => {
       <div className="absolute bottom-8 right-6 z-30">
         <div className="flex flex-col gap-4">
           <Button 
-            className="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white rounded-full h-16 w-16
-                      shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-110 animate-pulse"
+            className="bg-white text-maps-blue border border-maps-blue/20 rounded-full h-16 w-16
+                      shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-110"
             onClick={() => setMode('find')}
           >
             <Search className="h-7 w-7" />
           </Button>
           
           <Button 
-            className="bg-gradient-to-r from-maps-blue to-blue-600 hover:from-maps-blue hover:to-blue-700 text-white rounded-full h-16 w-16 
+            className="bg-maps-blue hover:bg-maps-blue/90 text-white rounded-full h-16 w-16 
                       shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-110"
             onClick={() => setMode('post')}
           >

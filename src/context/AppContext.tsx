@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { AppMode, RideOffer, SearchCriteria, PostRideData, TransitSuggestion } from '@/types';
+import DatabaseService from '@/lib/database';
 
 // Mock data for Dubai locations
 export const dubaiLocations = [
@@ -145,7 +146,7 @@ export const mockRides: RideOffer[] = [
     rating: 4.6,
     transitSuggestion: transitSuggestions[1] // Red Line Metro from Dubai Mall to Internet City
   },
-  // New fake rides for pitch presentation
+  // Additional fake rides
   {
     id: '6',
     driverName: 'Noor',
@@ -250,6 +251,8 @@ export const mockRides: RideOffer[] = [
   }
 ];
 
+export type SortOption = 'fastest' | 'cheapest' | null;
+
 interface AppContextValue {
   mode: AppMode;
   setMode: React.Dispatch<React.SetStateAction<AppMode>>;
@@ -265,6 +268,9 @@ interface AppContextValue {
   setRidePosted: React.Dispatch<React.SetStateAction<boolean>>;
   lastPostedRide: PostRideData | null;
   setLastPostedRide: React.Dispatch<React.SetStateAction<PostRideData | null>>;
+  sortOption: SortOption;
+  setSortOption: React.Dispatch<React.SetStateAction<SortOption>>;
+  performSearch: (sortOption?: SortOption) => void;
 }
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined);
@@ -286,6 +292,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [selectedRide, setSelectedRide] = useState<RideOffer | null>(null);
   const [ridePosted, setRidePosted] = useState(false);
   const [lastPostedRide, setLastPostedRide] = useState<PostRideData | null>(null);
+  const [sortOption, setSortOption] = useState<SortOption>(null);
+  
+  // Initialize the database with mock data when the app starts
+  useEffect(() => {
+    DatabaseService.initializeWithMockData(mockRides, transitSuggestions);
+  }, []);
+
+  // Search function to find and filter rides
+  const performSearch = (newSortOption?: SortOption) => {
+    const currentSort = newSortOption !== undefined ? newSortOption : sortOption;
+    
+    // Use the database service to search for rides
+    const results = DatabaseService.searchRides(
+      searchCriteria.startLocation,
+      searchCriteria.endLocation,
+      currentSort
+    );
+    
+    setSearchResults(results);
+  };
 
   return (
     <AppContext.Provider
@@ -304,6 +330,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setRidePosted,
         lastPostedRide,
         setLastPostedRide,
+        sortOption,
+        setSortOption,
+        performSearch,
       }}
     >
       {children}

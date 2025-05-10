@@ -1,13 +1,16 @@
-
 import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate";
 
-export default {
+const config = {
 	darkMode: ["class"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+		"./index.html",
 	],
 	prefix: "",
 	theme: {
@@ -53,25 +56,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				},
-				// Enhanced color palette
 				maps: {
-					blue: '#4285F4',
-					green: '#34C759',
-					orange: '#FBBC05',
+					blue: '#3E77FF',
+					orange: '#FF6B00',
+					green: '#34A853',
+					secondaryText: '#5f6368',
 					text: '#202124',
-					secondaryText: '#5F6368',
-					background: '#F8F9FA',
-					lightGray: '#E0E0E0',
 				},
 				neon: {
 					green: '#39FF14',
@@ -112,6 +102,14 @@ export default {
 						transform: 'translateY(0)'
 					}
 				},
+				'slide-up': {
+					'from': {
+						transform: 'translateY(100%)'
+					},
+					'to': {
+						transform: 'translateY(0)'
+					}
+				},
 				'scale-in': {
 					'0%': {
 						opacity: '0',
@@ -146,15 +144,16 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
-				'scale-in': 'scale-in 0.2s ease-out',
+				'slide-up': 'slide-up 0.4s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out',
 				'pulse-glow': 'pulse-glow 2s infinite ease-in-out',
 				'shimmer': 'shimmer 3s infinite linear'
 			},
 			fontFamily: {
-				'roboto': ['Roboto', 'sans-serif'],
+				sans: ["Roboto", "var(--font-sans)", ...fontFamily.sans],
 			},
 			boxShadow: {
-				'glow': '0 0 15px rgba(66, 133, 244, 0.5)',
+				'glow': '0 0 10px rgba(62, 119, 255, 0.5)',
 				'glow-lg': '0 0 30px rgba(66, 133, 244, 0.8)',
 			},
 			backgroundImage: {
@@ -163,5 +162,7 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [animate, typography],
 } satisfies Config;
+
+export default config;

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import DatabaseService from '@/lib/database';
+import { toast } from "sonner";
 
 const PostRideScreen: React.FC = () => {
   const { postRideData, setPostRideData, setMode, setRidePosted, setLastPostedRide } = useAppContext();
@@ -40,8 +41,22 @@ const PostRideScreen: React.FC = () => {
     
     // If no errors, post the ride
     if (Object.keys(newErrors).length === 0) {
-      setLastPostedRide({...postRideData});
-      setRidePosted(true);
+      // Save to database first
+      const newRide = DatabaseService.addRide(postRideData);
+      
+      if (newRide) {
+        // Then update app state
+        setLastPostedRide({...postRideData});
+        setRidePosted(true);
+        
+        toast.success("Ride posted successfully!", {
+          description: "Your ride is now available for others to book."
+        });
+      } else {
+        toast.error("Failed to post ride", {
+          description: "Please try again or contact support."
+        });
+      }
     }
   };
 
@@ -57,7 +72,7 @@ const PostRideScreen: React.FC = () => {
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="font-medium text-lg">Post a Ride</h1>
+        <h1 className="font-medium text-lg bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">Post a Ride</h1>
       </div>
 
       {/* Form Card */}
@@ -159,7 +174,7 @@ const PostRideScreen: React.FC = () => {
           
           <Button 
             type="submit"
-            className="bg-maps-green hover:bg-maps-green/90 text-white w-full h-12 mt-6"
+            className="bg-gradient-to-r from-maps-blue to-blue-600 hover:from-maps-blue hover:to-blue-700 text-white w-full h-12 mt-6"
           >
             Post Ride
           </Button>

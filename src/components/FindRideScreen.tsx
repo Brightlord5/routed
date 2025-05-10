@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, Users, Search } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Search, SortAsc, CircleDollarSign, Bus, Zap } from 'lucide-react';
 import LocationInput from '@/components/LocationInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,9 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { mockRides } from '@/context/AppContext';
 import RideCard from '@/components/RideCard';
 import RideDetailsScreen from '@/components/RideDetailsScreen';
+import { SortOption } from '@/context/AppContext';
+import { toast } from "sonner";
 
 const FindRideScreen: React.FC = () => {
   const { 
@@ -23,103 +23,48 @@ const FindRideScreen: React.FC = () => {
     setSearchCriteria, 
     setMode, 
     searchResults, 
-    setSearchResults,
     selectedRide,
-    lastPostedRide
+    sortOption,
+    setSortOption,
+    performSearch
   } = useAppContext();
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [demoMode, setDemoMode] = useState(false); // For presentation purposes
-
-  // Effect to update search results when lastPostedRide changes
+  
+  // Load all rides by default when component mounts
   useEffect(() => {
-    if (searchSubmitted && lastPostedRide) {
-      performSearch();
-    }
-  }, [lastPostedRide]);
-
-  // Extracted search logic to a reusable function
-  const performSearch = () => {
-    // Create a combined list of rides that includes mock rides and any user-posted rides
-    let availableRides = [...mockRides];
-    
-    // If there's a lastPostedRide, convert it to a RideOffer and add to available rides
-    if (lastPostedRide && lastPostedRide.startLocation && lastPostedRide.endLocation) {
-      const postedRide = {
-        id: 'user-posted-' + Date.now(),
-        driverName: 'You',
-        startLocation: lastPostedRide.startLocation,
-        endLocation: lastPostedRide.endLocation,
-        departureTime: lastPostedRide.departureTime,
-        passengerCapacity: lastPostedRide.passengerCapacity,
-        availableSeats: lastPostedRide.passengerCapacity,
-        cost: lastPostedRide.cost,
-        estimatedDuration: 25, // Default value
-        distance: 15.0, // Default value
-        carType: 'Your Car',
-        rating: 5.0,
-      };
-      availableRides.unshift(postedRide); // Add to the beginning of the array
-    }
-    
-    if (demoMode) {
-      // For demo/pitch, show filtered results or all results
-      if (searchCriteria.startLocation || searchCriteria.endLocation) {
-        setSearchResults(availableRides.filter(ride => 
-          (!searchCriteria.startLocation || 
-           ride.startLocation.name === searchCriteria.startLocation?.name ||
-           ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
-          (!searchCriteria.endLocation || 
-           ride.endLocation.name === searchCriteria.endLocation?.name ||
-           ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
-        ));
-      } else {
-        // If no search criteria, show all rides for demo
-        setSearchResults(availableRides);
-      }
-    } else {
-      // Normal search with strict criteria
-      setSearchResults(availableRides.filter(ride => 
-        (ride.startLocation.name === searchCriteria.startLocation?.name ||
-         ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
-        (ride.endLocation.name === searchCriteria.endLocation?.name ||
-         ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
-      ));
-    }
-  };
+    performSearch();
+    setSearchSubmitted(true);
+    toast.info("Showing available rides", { 
+      description: "Use filters to refine your search"
+    });
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
+    // Validate form (make validation optional now)
     const newErrors: Record<string, string> = {};
-    
-    if (!demoMode) {
-      if (!searchCriteria.startLocation) {
-        newErrors.startLocation = 'Starting location is required';
-      }
-      
-      if (!searchCriteria.endLocation) {
-        newErrors.endLocation = 'Destination location is required';
-      }
-    }
-    
     setErrors(newErrors);
     
-    // If no errors, search for rides
-    if (Object.keys(newErrors).length === 0) {
-      performSearch();
-      setSearchSubmitted(true);
-    }
+    // Search for rides using the current filter
+    performSearch();
+    setSearchSubmitted(true);
   };
-
-  // Toggle demo mode for presentations
-  const toggleDemoMode = () => {
-    setDemoMode(!demoMode);
-    if (!demoMode) {
-      // When enabling demo mode, clear any errors
-      setErrors({});
+  
+  // Handle sort changes
+  const handleSortChange = (newSortOption: SortOption) => {
+    setSortOption(newSortOption);
+    performSearch(newSortOption);
+    
+    // Show toast notification based on sort option
+    if (newSortOption === 'fastest') {
+      toast.success("Sorted by fastest travel time");
+    } else if (newSortOption === 'cheapest') {
+      toast.success("Sorted by lowest price");
+    } else {
+      toast.success("Showing all available rides");
     }
   };
 
@@ -141,18 +86,39 @@ const FindRideScreen: React.FC = () => {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="font-medium text-lg">Find a Ride</h1>
+          <h1 className="font-medium text-lg bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">Find a Ride</h1>
         </div>
         
-        {/* Demo Mode Toggle for Pitch Presentation */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={toggleDemoMode}
-          className={`text-xs ${demoMode ? 'bg-maps-green text-white' : ''}`}
-        >
-          {demoMode ? '🎬 Demo Mode On' : '🎬 Demo Mode'}
-        </Button>
+        {/* Sort Options */}
+        <div className="flex gap-2">
+          <Button
+            variant={sortOption === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleSortChange(null)}
+            className="text-xs flex items-center gap-1"
+          >
+            <SortAsc className="h-3 w-3" />
+            All
+          </Button>
+          <Button
+            variant={sortOption === 'fastest' ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleSortChange('fastest')}
+            className="text-xs flex items-center gap-1"
+          >
+            <Zap className="h-3 w-3" />
+            Fastest
+          </Button>
+          <Button
+            variant={sortOption === 'cheapest' ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleSortChange('cheapest')}
+            className="text-xs flex items-center gap-1"
+          >
+            <CircleDollarSign className="h-3 w-3" />
+            Cheapest
+          </Button>
+        </div>
       </div>
 
       {/* Form Card */}
@@ -258,11 +224,19 @@ const FindRideScreen: React.FC = () => {
       {/* Results Section */}
       {searchSubmitted && (
         <div className="absolute inset-x-0 bottom-0 top-[270px] z-20 bg-white/70 backdrop-blur-sm rounded-t-2xl p-4 animate-fade-in">
-          <h2 className="text-lg font-medium mb-4">
-            {searchResults.length > 0 
-              ? `${searchResults.length} Available Rides` 
-              : 'No Rides Found'}
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-medium">
+              {searchResults.length > 0 
+                ? `${searchResults.length} Available Rides` 
+                : 'No Rides Found'}
+            </h2>
+            
+            {/* Transit Integration Badge */}
+            <div className="flex items-center bg-purple-100 px-2 py-1 rounded-full text-xs text-purple-700">
+              <Bus className="h-3 w-3 mr-1" />
+              <span>With Transit Options</span>
+            </div>
+          </div>
           
           {searchResults.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 text-maps-secondaryText">
