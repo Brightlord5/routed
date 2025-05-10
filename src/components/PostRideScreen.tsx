@@ -142,7 +142,7 @@ const PostRideScreen: React.FC = () => {
           </div>
           
           <div>
-            <Label htmlFor="departureTime">Departure Time (Optional)</Label>
+            <Label htmlFor="departureTime">Departure Time</Label>
             <div className="relative">
               <Clock className="absolute left-3 top-3 h-4 w-4 text-maps-secondaryText" />
               <Input
@@ -170,3 +170,4 @@ const PostRideScreen: React.FC = () => {
 };
 
 export default PostRideScreen;
+

@@ -34,7 +34,7 @@ const FindRideScreen: React.FC = () => {
     e.preventDefault();
     
     // Validate form
-    const newErrors: Record<string, string> = {};
+    const newErrors: Record<string, string>> = {};
     
     if (!searchCriteria.startLocation) {
       newErrors.startLocation = 'Starting location is required';
@@ -116,7 +116,7 @@ const FindRideScreen: React.FC = () => {
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="arrivalTime">Desired Arrival Time (Optional)</Label>
+              <Label htmlFor="arrivalTime">Desired Arrival Time</Label>
               <div className="relative">
                 <Clock className="absolute left-3 top-3 h-4 w-4 text-maps-secondaryText" />
                 <Input
@@ -208,3 +208,4 @@ const FindRideScreen: React.FC = () => {
 };
 
 export default FindRideScreen;
+
