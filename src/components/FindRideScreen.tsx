@@ -34,7 +34,7 @@ const FindRideScreen: React.FC = () => {
     e.preventDefault();
     
     // Validate form
-    const newErrors: Record<string, string>> = {};
+    const newErrors: Record<string, string> = {};
     
     if (!searchCriteria.startLocation) {
       newErrors.startLocation = 'Starting location is required';
