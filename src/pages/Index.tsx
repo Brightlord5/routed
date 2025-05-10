@@ -8,7 +8,7 @@ import PostConfirmationScreen from '@/components/PostConfirmationScreen';
 import FindRideScreen from '@/components/FindRideScreen';
 
 // Main app wrapper with context
-const CarpoolingApp = () => {
+const TaxipoolingApp = () => {
   const { mode, ridePosted } = useAppContext();
 
   const renderContent = () => {
@@ -41,7 +41,7 @@ const CarpoolingApp = () => {
 const Index = () => {
   return (
     <AppProvider>
-      <CarpoolingApp />
+      <TaxipoolingApp />
     </AppProvider>
   );
 };

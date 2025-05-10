@@ -94,7 +94,7 @@ const RideCard: React.FC<RideCardProps> = ({ ride }) => {
           <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center rounded-full bg-appPrimary/10 px-2.5 py-1 text-xs font-medium text-appPrimary">
               <Car className="h-3.5 w-3.5 mr-1.5" />
-              Carpool: {formattedDuration}
+              Taxipool: {formattedDuration}
             </span>
             {hasTransit && (
               <span className="inline-flex items-center rounded-full bg-purple-500/10 px-2.5 py-1 text-xs font-medium text-purple-400">

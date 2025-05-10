@@ -49,7 +49,7 @@ const RideDetailsScreen: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-appBackground via-appBackground/70 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4 text-center">
             <div className="text-white text-lg font-semibold px-4 py-2 rounded-lg bg-black/50 backdrop-blur-sm">
-                {selectedRide.distance} km • {selectedRide.estimatedDuration} min carpool
+                {selectedRide.distance} km • {selectedRide.estimatedDuration} min taxipool
                 {hasTransit && <span className="block text-xs"> + {selectedRide.transitSuggestion?.duration} min transit</span>}
             </div>
         </div>
@@ -73,11 +73,11 @@ const RideDetailsScreen: React.FC = () => {
             <div className="flex-1">
               <div>
                 <div className="font-semibold text-appText">{selectedRide.startLocation.name}</div>
-                <div className="text-xs text-appTextSecondary">Carpool pickup</div>
+                <div className="text-xs text-appTextSecondary">Taxipool pickup</div>
               </div>
               <div className="mt-4">
                 <div className="font-semibold text-appText">{selectedRide.endLocation.name}</div>
-                <div className="text-xs text-appTextSecondary">{hasTransit ? 'Carpool dropoff / Transit connection' : 'Final Destination'}</div>
+                <div className="text-xs text-appTextSecondary">{hasTransit ? 'Taxipool dropoff / Transit connection' : 'Final Destination'}</div>
               </div>
               {hasTransit && selectedRide.transitSuggestion && (
                 <div className="mt-4">
@@ -91,7 +91,7 @@ const RideDetailsScreen: React.FC = () => {
 
         {/* Ride Details Section */}
         <div className="bg-appCard p-5 rounded-xl border border-appBorder shadow-lg space-y-4">
-          <h3 className="text-lg font-semibold text-appPrimary mb-2">Carpool Details</h3>
+          <h3 className="text-lg font-semibold text-appPrimary mb-2">Taxipool Details</h3>
           <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
             <div className="flex items-center"><Clock className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Departure:</span> {selectedRide.departureTime || "Flexible"}</div></div>
             <div className="flex items-center"><DollarSign className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Cost:</span> AED {selectedRide.cost}</div></div>
@@ -121,7 +121,7 @@ const RideDetailsScreen: React.FC = () => {
             <h3 className="text-lg font-semibold text-purple-400 mb-2">Public Transit Connection</h3>
             <TransitCard transit={selectedRide.transitSuggestion} />
             <p className="text-xs text-appTextSecondary italic px-1">
-              Continue your journey using this public transit option after your carpool.
+              Continue your journey using this public transit option after your taxipool.
             </p>
           </div>
         )}
