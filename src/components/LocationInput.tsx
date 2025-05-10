@@ -9,6 +9,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from '@/components/ui/command';
 import {
   Popover,
@@ -56,32 +57,34 @@ const LocationInput: React.FC<LocationInputProps> = ({
       <PopoverContent className="w-[calc(100vw-2rem)] p-0 max-w-md z-50">
         <Command>
           <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} />
-          <CommandEmpty>No location found.</CommandEmpty>
-          <CommandGroup className="max-h-64 overflow-auto">
-            {dubaiLocations.map((location) => (
-              <CommandItem
-                key={location.name}
-                value={location.name}
-                onSelect={() => {
-                  onChange({
-                    name: location.name,
-                    coordinates: location.coordinates as [number, number] 
-                  });
-                  setOpen(false);
-                }}
-                className="flex items-center"
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value?.name === location.name ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                <MapPin className="h-4 w-4 mr-2 text-maps-secondaryText" />
-                {location.name}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandEmpty>No location found.</CommandEmpty>
+            <CommandGroup className="max-h-64 overflow-auto">
+              {dubaiLocations.map((location) => (
+                <CommandItem
+                  key={location.name}
+                  value={location.name}
+                  onSelect={() => {
+                    onChange({
+                      name: location.name,
+                      coordinates: location.coordinates as [number, number] 
+                    });
+                    setOpen(false);
+                  }}
+                  className="flex items-center"
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value?.name === location.name ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  <MapPin className="h-4 w-4 mr-2 text-maps-secondaryText" />
+                  {location.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
