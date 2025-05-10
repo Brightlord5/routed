@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Card } from '@/components/ui/card';
-import { Clock, User, Car, Star, Bus, ArrowRight, MapPin, Users as PassengerIcon, Tag } from 'lucide-react';
+import { Clock, User, Car, Star, Bus, ArrowRight, MapPin, Users as PassengerIcon, Tag, Leaf } from 'lucide-react';
 import { RideOffer } from '@/types';
 
 interface RideCardProps {
@@ -91,7 +91,7 @@ const RideCard: React.FC<RideCardProps> = ({ ride }) => {
           </div>
 
           {/* Journey time tags */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="inline-flex items-center rounded-full bg-appPrimary/10 px-2.5 py-1 text-xs font-medium text-appPrimary">
               <Car className="h-3.5 w-3.5 mr-1.5" />
               Carpool: {formattedDuration}
@@ -100,6 +100,12 @@ const RideCard: React.FC<RideCardProps> = ({ ride }) => {
               <span className="inline-flex items-center rounded-full bg-purple-500/10 px-2.5 py-1 text-xs font-medium text-purple-400">
                 <Bus className="h-3.5 w-3.5 mr-1.5" />
                 Transit: {ride.transitSuggestion?.duration} min
+              </span>
+            )}
+            {ride.co2EmissionsSaved && (
+              <span className="inline-flex items-center rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-medium text-green-500">
+                <Leaf className="h-3.5 w-3.5 mr-1.5" />
+                Saves {ride.co2EmissionsSaved.toFixed(2)} kg CO₂
               </span>
             )}
           </div>

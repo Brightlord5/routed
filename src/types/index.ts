@@ -45,4 +45,5 @@ export interface RideOffer {
   carType: string;
   rating: number;
   transitSuggestion?: TransitSuggestion;
+  co2EmissionsSaved?: number; // in kilograms
 }

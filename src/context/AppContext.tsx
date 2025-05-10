@@ -85,7 +85,8 @@ export const mockRides: RideOffer[] = [
     distance: 12.3,
     carType: 'Sedan',
     rating: 4.8,
-    transitSuggestion: transitSuggestions[2] // Bus 28 from Palm Jumeirah to Dubai Marina
+    transitSuggestion: transitSuggestions[2], // Bus 28 from Palm Jumeirah to Dubai Marina
+    co2EmissionsSaved: 4.43 // 12.3 km * 0.12 kg/km * 3 seats
   },
   {
     id: '2',
@@ -100,7 +101,8 @@ export const mockRides: RideOffer[] = [
     distance: 5.8,
     carType: 'SUV',
     rating: 4.5,
-    transitSuggestion: transitSuggestions[0] // Bus 50 from Business Bay to Al Quoz
+    transitSuggestion: transitSuggestions[0], // Bus 50 from Business Bay to Al Quoz
+    co2EmissionsSaved: 1.39 // 5.8 km * 0.12 kg/km * 2 seats
   },
   {
     id: '3',
@@ -115,7 +117,8 @@ export const mockRides: RideOffer[] = [
     distance: 11.8,
     carType: 'Sedan',
     rating: 4.9,
-    transitSuggestion: transitSuggestions[3] // Bus 36A from DIFC to Dubai Mall
+    transitSuggestion: transitSuggestions[3], // Bus 36A from DIFC to Dubai Mall
+    co2EmissionsSaved: 5.66 // 11.8 km * 0.12 kg/km * 4 seats
   },
   {
     id: '4',
@@ -129,7 +132,8 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 35,
     distance: 24.2,
     carType: 'Van',
-    rating: 4.7
+    rating: 4.7,
+    co2EmissionsSaved: 8.71 // 24.2 km * 0.12 kg/km * 3 seats
   },
   {
     id: '5',
@@ -144,7 +148,8 @@ export const mockRides: RideOffer[] = [
     distance: 15.5,
     carType: 'Compact',
     rating: 4.6,
-    transitSuggestion: transitSuggestions[1] // Red Line Metro from Dubai Mall to Internet City
+    transitSuggestion: transitSuggestions[1], // Red Line Metro from Dubai Mall to Internet City
+    co2EmissionsSaved: 1.86 // 15.5 km * 0.12 kg/km * 1 seat
   },
   // Additional fake rides
   {
@@ -160,7 +165,8 @@ export const mockRides: RideOffer[] = [
     distance: 16.7,
     carType: 'Tesla Model 3',
     rating: 4.9,
-    transitSuggestion: transitSuggestions[2] // Bus 28 from Palm Jumeirah to Dubai Marina
+    transitSuggestion: transitSuggestions[2], // Bus 28 from Palm Jumeirah to Dubai Marina
+    co2EmissionsSaved: 4.01 // 16.7 km * 0.12 kg/km * 2 seats
   },
   {
     id: '7',
@@ -175,7 +181,8 @@ export const mockRides: RideOffer[] = [
     distance: 18.2,
     carType: 'SUV',
     rating: 4.7,
-    transitSuggestion: transitSuggestions[4] // Metro Red Line from Business Bay to Dubai Marina
+    transitSuggestion: transitSuggestions[4], // Metro Red Line from Business Bay to Dubai Marina
+    co2EmissionsSaved: 8.74 // 18.2 km * 0.12 kg/km * 4 seats
   },
   {
     id: '8',
@@ -190,7 +197,8 @@ export const mockRides: RideOffer[] = [
     distance: 9.5,
     carType: 'Hybrid',
     rating: 4.8,
-    transitSuggestion: transitSuggestions[0] // Bus 50 from Business Bay to Al Quoz
+    transitSuggestion: transitSuggestions[0], // Bus 50 from Business Bay to Al Quoz
+    co2EmissionsSaved: 3.42 // 9.5 km * 0.12 kg/km * 3 seats
   },
   {
     id: '9',
@@ -204,7 +212,8 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 25,
     distance: 15.3,
     carType: 'Luxury Sedan',
-    rating: 4.9
+    rating: 4.9,
+    co2EmissionsSaved: 1.84 // 15.3 km * 0.12 kg/km * 1 seat
   },
   {
     id: '10',
@@ -219,7 +228,8 @@ export const mockRides: RideOffer[] = [
     distance: 10.8,
     carType: 'Electric',
     rating: 5.0,
-    transitSuggestion: transitSuggestions[3] // Bus 36A from DIFC to Dubai Mall
+    transitSuggestion: transitSuggestions[3], // Bus 36A from DIFC to Dubai Mall
+    co2EmissionsSaved: 2.59 // 10.8 km * 0.12 kg/km * 2 seats
   },
   {
     id: '11',
@@ -233,7 +243,8 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 22,
     distance: 14.2,
     carType: 'Sedan',
-    rating: 4.6
+    rating: 4.6,
+    co2EmissionsSaved: 5.11 // 14.2 km * 0.12 kg/km * 3 seats
   },
   {
     id: '12',
@@ -247,7 +258,8 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 30,
     distance: 19.5,
     carType: 'Sports Car',
-    rating: 4.7
+    rating: 4.7,
+    co2EmissionsSaved: 2.34 // 19.5 km * 0.12 kg/km * 1 seat
   }
 ];
 

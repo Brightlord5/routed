@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, User, Car, Calendar, MapPin, Star, Check, Bus, Users as PassengerIcon, Tag, DollarSign } from 'lucide-react';
+import { ArrowLeft, Clock, User, Car, Calendar, MapPin, Star, Check, Bus, Users as PassengerIcon, Tag, DollarSign, Leaf } from 'lucide-react';
 import { toast } from "sonner";
 import TransitCard from './TransitCard';
 
@@ -97,6 +97,19 @@ const RideDetailsScreen: React.FC = () => {
             <div className="flex items-center"><Car className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Vehicle:</span> {selectedRide.carType}</div></div>
             <div className="flex items-center"><MapPin className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Distance:</span> {selectedRide.distance} km</div></div>
             <div className="flex items-center"><Clock className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Time:</span> {selectedRide.estimatedDuration} min</div></div>
+            
+            {selectedRide.co2EmissionsSaved && (
+              <div className="flex items-center col-span-2 mt-2 border-t border-appBorder pt-3">
+                <Leaf className="h-4 w-4 mr-2 text-green-500" />
+                <div>
+                  <span className="text-appTextSecondary">CO₂ Emissions Saved:</span>
+                  <span className="text-green-500 font-semibold ml-2">{selectedRide.co2EmissionsSaved.toFixed(2)} kg</span>
+                  <span className="text-xs text-appTextSecondary ml-2">
+                    (equivalent to planting {Math.round(selectedRide.co2EmissionsSaved * 0.5)} trees)
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

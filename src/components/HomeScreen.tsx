@@ -13,7 +13,7 @@ const HomeScreen: React.FC = () => {
         <div className="flex items-center">
           <Menu className="h-6 w-6 text-appAccent mr-3 cursor-pointer" />
           <h1 className="font-bold text-xl text-appText">
-            Dubai Ride Share
+            ROUTED
           </h1>
         </div>
         
@@ -35,7 +35,7 @@ const HomeScreen: React.FC = () => {
           Ride as one, sustain forever.
         </h2>
         <p className="text-appTextSecondary mb-8 leading-relaxed">
-          Connect, commute, and save. Find or offer rides with seamless public transport links across Dubai.
+          Connect, commute, and save. Find or offer rides with seamless public transport links across UAE.
         </p>
         
         <div className="flex flex-col gap-4">
