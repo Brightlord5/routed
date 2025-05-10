@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,6 +97,38 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-roboto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar for cards */
+  .scrollable-cards::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .scrollable-cards::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollable-cards::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 10px;
+  }
+  
+  .scrollable-cards::-webkit-scrollbar-thumb:hover {
+    background: #9e9e9e;
+  }
+
+  .map-container {
+    @apply h-full w-full absolute inset-0;
+    z-index: 10;
+  }
+
+  .map-overlay {
+    @apply absolute inset-0 pointer-events-none;
+    z-index: 20;
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 60%, rgba(255,255,255,0.8) 100%);
   }
 }

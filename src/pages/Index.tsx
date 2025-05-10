@@ -1,13 +1,48 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
+import React from 'react';
+import { AppProvider, useAppContext } from '@/context/AppContext';
+import Map from '@/components/Map';
+import HomeScreen from '@/components/HomeScreen';
+import PostRideScreen from '@/components/PostRideScreen';
+import PostConfirmationScreen from '@/components/PostConfirmationScreen';
+import FindRideScreen from '@/components/FindRideScreen';
+
+// Main app wrapper with context
+const CarpoolingApp = () => {
+  const { mode, ridePosted } = useAppContext();
+
+  const renderContent = () => {
+    if (ridePosted) {
+      return <PostConfirmationScreen />;
+    }
+
+    switch (mode) {
+      case 'post':
+        return <PostRideScreen />;
+      case 'find':
+        return <FindRideScreen />;
+      default:
+        return <HomeScreen />;
+    }
+  };
+
+  return (
+    <div className="relative h-screen w-full overflow-hidden">
+      {/* Map Component (always present in background) */}
+      <Map />
+      
+      {/* Dynamic Content Based on App Mode */}
+      {renderContent()}
+    </div>
+  );
+};
+
+// Main entry point with context provider
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <AppProvider>
+      <CarpoolingApp />
+    </AppProvider>
   );
 };
 
