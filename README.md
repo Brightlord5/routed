@@ -1,51 +1,56 @@
-# Dubai Ride Share
+# Welcome to your Lovable project
 
-A modern carpooling application designed specifically for Dubai, with integration to public transport options.
+## Project info
 
-## Features
+**URL**: https://lovable.dev/projects/f59f9e82-15e4-4d06-909a-be4adfdbd162
 
-- **Find a Ride**: Search for available rides with various sorting options:
-  - Fastest routes
-  - Cheapest rides
-  - Public transit connections
+## How can I edit this code?
 
-- **Post a Ride**: Easily post your ride details for others to join
+There are several ways of editing your application.
 
-- **Transit Integration**: Discover public transport options to continue your journey after ride ends
+**Use your preferred IDE**
 
-- **Persistent Storage**: All rides are stored in SQLite database
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-## Technology Stack
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-- React
+Follow these steps:
+
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
+
+**Edit a file directly in GitHub**
+
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
 - TypeScript
+- React
+- shadcn-ui
 - Tailwind CSS
-- SQLite (via better-sqlite3)
-- Shadcn UI Components
 
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Start the development server:
-   ```
-   npm run dev
-   ```
-
-## Database
-
-The application uses SQLite for data persistence. Rides and transit suggestions are stored in a local database (`rides.db`).
-
-## UI Features
-
-- Modern, minimalist design
-- Transit suggestions for multi-modal travel
-- Interactive map visualization
-- Responsive mobile-first layout
-
-## License
-
-MIT

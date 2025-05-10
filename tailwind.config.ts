@@ -23,6 +23,15 @@ const config = {
 		},
 		extend: {
 			colors: {
+				appBackground: '#1A202C',
+				appText: '#E2E8F0',
+				appTextSecondary: '#A0AEC0',
+				appPrimary: '#4299E1',
+				appPrimaryHover: '#2B6CB0',
+				appAccent: '#ED8936',
+				appAccentHover: '#DD6B20',
+				appCard: '#2D3748',
+				appBorder: '#4A5568',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -60,8 +69,8 @@ const config = {
 					blue: '#3E77FF',
 					orange: '#FF6B00',
 					green: '#34A853',
-					secondaryText: '#5f6368',
-					text: '#202124',
+					secondaryText: '#A0AEC0',
+					text: '#E2E8F0',
 				},
 				neon: {
 					green: '#39FF14',
@@ -121,14 +130,11 @@ const config = {
 					}
 				},
 				'pulse-glow': {
-					'0%': {
-						boxShadow: '0 0 5px rgba(66, 133, 244, 0.5)'
+					'0%, 100%': {
+						boxShadow: '0 0 5px rgba(66, 153, 225, 0.5)'
 					},
 					'50%': {
-						boxShadow: '0 0 20px rgba(66, 133, 244, 0.8)'
-					},
-					'100%': {
-						boxShadow: '0 0 5px rgba(66, 133, 244, 0.5)'
+						boxShadow: '0 0 20px rgba(66, 153, 225, 0.8)'
 					}
 				},
 				'shimmer': {
@@ -150,15 +156,15 @@ const config = {
 				'shimmer': 'shimmer 3s infinite linear'
 			},
 			fontFamily: {
-				sans: ["Roboto", "var(--font-sans)", ...fontFamily.sans],
+				sans: ["Nunito", "var(--font-sans)", ...fontFamily.sans],
 			},
 			boxShadow: {
-				'glow': '0 0 10px rgba(62, 119, 255, 0.5)',
-				'glow-lg': '0 0 30px rgba(66, 133, 244, 0.8)',
+				'glow': '0 0 10px rgba(66, 153, 225, 0.4)',
+				'glow-lg': '0 0 20px rgba(66, 153, 225, 0.6)',
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'gradient-shimmer': 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent)',
+				'gradient-shimmer': 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)',
 			}
 		}
 	},

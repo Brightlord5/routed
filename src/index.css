@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 26 32 44; /* #1A202C appBackground */
+    --foreground: 226 232 240; /* #E2E8F0 appText */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 45 55 72; /* #2D3748 appCard */
+    --card-foreground: var(--foreground);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: var(--card);
+    --popover-foreground: var(--foreground);
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 66 153 225; /* #4299E1 appPrimary */
+    --primary-foreground: 26 32 44; /* #1A202C appBackground - for text on primary */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 74 85 104; /* #4A5568 appBorder - using border as secondary bg */
+    --secondary-foreground: var(--foreground);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: var(--secondary);
+    --muted-foreground: 160 174 192; /* #A0AEC0 appTextSecondary */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 237 137 54; /* #ED8936 appAccent */
+    --accent-foreground: 26 32 44; /* #1A202C appBackground - for text on accent */
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 350 75% 55%; /* A reddish tone for destructive actions */
+    --destructive-foreground: var(--foreground);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 74 85 104; /* #4A5568 appBorder */
+    --input: var(--card); /* Input fields same as card background */
+    --ring: var(--primary); /* Ring color same as primary */
 
     --radius: 0.5rem;
 
@@ -51,43 +51,12 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+  /* The .dark class is not strictly necessary if dark mode is default,
+     but can be kept for explicitness or if you plan to add a light mode toggle later. 
+     For now, we'll make the root variables dark by default. */
+  
+  /* Remove .dark class specific overrides if dark is default */
+  /* .dark { ... } */
 }
 
 @layer base {
@@ -96,65 +65,66 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-appBackground text-appText;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   /* Custom scrollbar for cards */
   .scrollable-cards::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
   
   .scrollable-cards::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--appCard); /* Use card background for track */
   }
   
   .scrollable-cards::-webkit-scrollbar-thumb {
-    background: rgba(189, 189, 189, 0.5);
+    background: var(--appBorder); /* Use border color for thumb */
     border-radius: 10px;
   }
   
   .scrollable-cards::-webkit-scrollbar-thumb:hover {
-    background: rgba(158, 158, 158, 0.7);
+    background: var(--appPrimary); /* Use primary color for thumb hover */
   }
 
   .map-container {
     @apply h-full w-full absolute inset-0;
-    z-index: 10;
+    z-index: 10; /* Ensure map is behind UI elements */
   }
 
   .map-overlay {
     @apply absolute inset-0 pointer-events-none;
     z-index: 20;
-    background: linear-gradient(to bottom, rgba(255,255,255,0) 60%, rgba(255,255,255,0.8) 100%);
+    /* Adjust gradient for dark theme if needed, or make it more subtle */
+    background: linear-gradient(to bottom, rgba(26,32,44,0) 60%, rgba(26,32,44,0.8) 100%);
   }
   
-  /* Glassmorphism */
+  /* Update glassmorphism for dark theme */
   .glass {
-    @apply backdrop-blur-md bg-white/70 border border-white/20;
+    @apply backdrop-blur-md bg-appCard/70 border border-appBorder/50; 
   }
   
-  /* Text shadow */
+  /* Text shadow might need adjustment for dark backgrounds, or removed if not desired */
   .text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
   
   .text-shadow-lg {
-    text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
   }
   
   /* Animations */
   @keyframes pulse {
-    0% { opacity: 0.6; }
+    0% { opacity: 0.7; }
     50% { opacity: 1; }
-    100% { opacity: 0.6; }
+    100% { opacity: 0.7; }
   }
   
   @keyframes float {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); } /* Slightly reduced float */
     100% { transform: translateY(0px); }
   }
   
@@ -168,8 +138,9 @@
   }
   
   .animate-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    /* Shimmer effect might be less visible on dark, adjust if needed */
+    background: linear-gradient(90deg, transparent, rgba(226,232,240,0.05), transparent);
     background-size: 1000px 100%;
-    animation: shimmer 2s infinite;
+    animation: shimmer 2.5s infinite;
   }
 }
