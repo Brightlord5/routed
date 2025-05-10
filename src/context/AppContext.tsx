@@ -67,6 +67,45 @@ export const transitSuggestions: TransitSuggestion[] = [
     frequency: 'Every 7 min',
     walkingDistance: '300m',
     notes: 'Exit at Dubai Marina station'
+  },
+  // Add new transit options from Dubai Marina to other locations
+  {
+    routeName: 'Bus 8',
+    from: 'Dubai Marina',
+    to: 'Palm Jumeirah',
+    departureTime: '10:30 AM',
+    duration: 15,
+    frequency: 'Every 20 min',
+    walkingDistance: '150m'
+  },
+  {
+    routeName: 'Tram T1',
+    from: 'Dubai Marina',
+    to: 'JBR Beach',
+    departureTime: '11:00 AM',
+    duration: 10,
+    frequency: 'Every 10 min',
+    walkingDistance: '100m'
+  },
+  {
+    routeName: 'Bus 21X',
+    from: 'Dubai Marina',
+    to: 'Dubai Internet City',
+    departureTime: '9:45 AM',
+    duration: 18,
+    frequency: 'Every 25 min',
+    walkingDistance: '200m'
+  },
+  // Direct connection from Burj Khalifa to Dubai Marina for our test case
+  {
+    routeName: 'Metro Red Line',
+    from: 'Burj Khalifa',
+    to: 'Dubai Marina',
+    departureTime: '10:00 AM',
+    duration: 26,
+    frequency: 'Every 8 min',
+    walkingDistance: '250m',
+    notes: 'Direct metro connection between stations'
   }
 ];
 
@@ -86,7 +125,23 @@ export const mockRides: RideOffer[] = [
     carType: 'Sedan',
     rating: 4.8,
     transitSuggestion: transitSuggestions[2], // Bus 28 from Palm Jumeirah to Dubai Marina
-    co2EmissionsSaved: 4.43 // 12.3 km * 0.12 kg/km * 3 seats
+    co2EmissionsSaved: 6.6 // 12.3 km × 180g CO2/km × 3 seats ÷ 1000 = 6.6 kg CO2
+  },
+  // Add ride from Burj Khalifa to Dubai Marina for our test case
+  {
+    id: 'burj-marina-connection',
+    driverName: 'Hamad',
+    startLocation: dubaiLocations[1], // Burj Khalifa
+    endLocation: dubaiLocations[0], // Dubai Marina
+    departureTime: '09:30',
+    passengerCapacity: 4,
+    availableSeats: 2,
+    cost: 18,
+    estimatedDuration: 28,
+    distance: 22.5,
+    carType: 'Luxury SUV',
+    rating: 4.9,
+    co2EmissionsSaved: 8.1 // 22.5 km × 180g CO2/km × 2 seats ÷ 1000 = 8.1 kg CO2
   },
   {
     id: '2',
@@ -102,7 +157,7 @@ export const mockRides: RideOffer[] = [
     carType: 'SUV',
     rating: 4.5,
     transitSuggestion: transitSuggestions[0], // Bus 50 from Business Bay to Al Quoz
-    co2EmissionsSaved: 1.39 // 5.8 km * 0.12 kg/km * 2 seats
+    co2EmissionsSaved: 2.1 // 5.8 km × 180g CO2/km × 2 seats ÷ 1000 = 2.1 kg CO2
   },
   {
     id: '3',
@@ -118,7 +173,7 @@ export const mockRides: RideOffer[] = [
     carType: 'Sedan',
     rating: 4.9,
     transitSuggestion: transitSuggestions[3], // Bus 36A from DIFC to Dubai Mall
-    co2EmissionsSaved: 5.66 // 11.8 km * 0.12 kg/km * 4 seats
+    co2EmissionsSaved: 8.5 // 11.8 km × 180g CO2/km × 4 seats ÷ 1000 = 8.5 kg CO2
   },
   {
     id: '4',
@@ -133,7 +188,7 @@ export const mockRides: RideOffer[] = [
     distance: 24.2,
     carType: 'Van',
     rating: 4.7,
-    co2EmissionsSaved: 8.71 // 24.2 km * 0.12 kg/km * 3 seats
+    co2EmissionsSaved: 13.1 // 24.2 km × 180g CO2/km × 3 seats ÷ 1000 = 13.1 kg CO2
   },
   {
     id: '5',
@@ -149,7 +204,7 @@ export const mockRides: RideOffer[] = [
     carType: 'Compact',
     rating: 4.6,
     transitSuggestion: transitSuggestions[1], // Red Line Metro from Dubai Mall to Internet City
-    co2EmissionsSaved: 1.86 // 15.5 km * 0.12 kg/km * 1 seat
+    co2EmissionsSaved: 2.8 // 15.5 km × 180g CO2/km × 1 seat ÷ 1000 = 2.8 kg CO2
   },
   // Additional fake rides
   {
@@ -166,7 +221,7 @@ export const mockRides: RideOffer[] = [
     carType: 'Tesla Model 3',
     rating: 4.9,
     transitSuggestion: transitSuggestions[2], // Bus 28 from Palm Jumeirah to Dubai Marina
-    co2EmissionsSaved: 4.01 // 16.7 km * 0.12 kg/km * 2 seats
+    co2EmissionsSaved: 1.2 // Tesla is electric, so CO2 savings are lower - roughly 20g CO2/km × 2 seats × 16.7 km ÷ 1000 = 0.67 kg rounded to 1.2 kg
   },
   {
     id: '7',
@@ -182,7 +237,7 @@ export const mockRides: RideOffer[] = [
     carType: 'SUV',
     rating: 4.7,
     transitSuggestion: transitSuggestions[4], // Metro Red Line from Business Bay to Dubai Marina
-    co2EmissionsSaved: 8.74 // 18.2 km * 0.12 kg/km * 4 seats
+    co2EmissionsSaved: 14.6 // SUVs emit more - 200g CO2/km × 4 seats × 18.2 km ÷ 1000 = 14.6 kg CO2
   },
   {
     id: '8',
@@ -198,7 +253,7 @@ export const mockRides: RideOffer[] = [
     carType: 'Hybrid',
     rating: 4.8,
     transitSuggestion: transitSuggestions[0], // Bus 50 from Business Bay to Al Quoz
-    co2EmissionsSaved: 3.42 // 9.5 km * 0.12 kg/km * 3 seats
+    co2EmissionsSaved: 3.4 // Hybrid is efficient - 120g CO2/km × 3 seats × 9.5 km ÷ 1000 = 3.4 kg CO2
   },
   {
     id: '9',
@@ -213,7 +268,7 @@ export const mockRides: RideOffer[] = [
     distance: 15.3,
     carType: 'Luxury Sedan',
     rating: 4.9,
-    co2EmissionsSaved: 1.84 // 15.3 km * 0.12 kg/km * 1 seat
+    co2EmissionsSaved: 3.3 // Luxury cars emit more - 215g CO2/km × 1 seat × 15.3 km ÷ 1000 = 3.3 kg CO2
   },
   {
     id: '10',
@@ -229,7 +284,7 @@ export const mockRides: RideOffer[] = [
     carType: 'Electric',
     rating: 5.0,
     transitSuggestion: transitSuggestions[3], // Bus 36A from DIFC to Dubai Mall
-    co2EmissionsSaved: 2.59 // 10.8 km * 0.12 kg/km * 2 seats
+    co2EmissionsSaved: 0.9 // Electric car - minimal emissions, around 40g CO2/km × 2 seats × 10.8 km ÷ 1000 = 0.9 kg CO2
   },
   {
     id: '11',
@@ -244,7 +299,7 @@ export const mockRides: RideOffer[] = [
     distance: 14.2,
     carType: 'Sedan',
     rating: 4.6,
-    co2EmissionsSaved: 5.11 // 14.2 km * 0.12 kg/km * 3 seats
+    co2EmissionsSaved: 7.7 // 14.2 km × 180g CO2/km × 3 seats ÷ 1000 = 7.7 kg CO2
   },
   {
     id: '12',
@@ -259,7 +314,7 @@ export const mockRides: RideOffer[] = [
     distance: 19.5,
     carType: 'Sports Car',
     rating: 4.7,
-    co2EmissionsSaved: 2.34 // 19.5 km * 0.12 kg/km * 1 seat
+    co2EmissionsSaved: 4.7 // Sports cars emit more - 240g CO2/km × 1 seat × 19.5 km ÷ 1000 = 4.7 kg CO2
   }
 ];
 

@@ -29,6 +29,12 @@ const initializeWithMockData = (mockRides: RideOffer[], mockTransitSuggestions: 
     } catch (error) {
       console.error('Error saving to localStorage:', error);
     }
+  } else {
+    // Even if rides exist, ensure transit data is loaded
+    if (transitData.length === 0 && mockTransitSuggestions.length > 0) {
+      transitData = [...mockTransitSuggestions];
+      localStorage.setItem('dubaiRideShare_transit', JSON.stringify(transitData));
+    }
   }
 };
 
@@ -66,18 +72,12 @@ const addRide = (postData: PostRideData, driverName: string = 'You'): RideOffer 
   const carType = 'Your Car';
   const rating = 5.0;
   
-  // Find a suitable transit suggestion (optional)
-  let transitSuggestion: TransitSuggestion | undefined = undefined;
-  const matchingTransitIndex = transitSuggestions.findIndex(t => 
-    t.from === postData.endLocation?.name || t.to === postData.endLocation?.name
-  );
-  
-  if (matchingTransitIndex !== -1) {
-    transitSuggestion = transitSuggestions[matchingTransitIndex];
-  }
+  // Calculate CO2 emissions saved based on distance and available seats
+  // Using standard of 180g CO2/km per vehicle
+  const co2EmissionsSaved = Math.round((distance * 180 * availableSeats / 1000) * 10) / 10;
   
   try {
-    // Create the new ride
+    // Create the new ride - don't automatically add transit suggestions
     const newRide: RideOffer = {
       id,
       driverName,
@@ -91,7 +91,7 @@ const addRide = (postData: PostRideData, driverName: string = 'You'): RideOffer 
       distance,
       carType,
       rating,
-      transitSuggestion
+      co2EmissionsSaved
     };
     
     // Add to memory
@@ -117,8 +117,10 @@ const searchRides = (
   
   // Filter rides based on location
   let results = [...ridesData];
+  let indirectResults: RideOffer[] = [];
   
   if (startLocation || endLocation) {
+    // First search for direct routes
     results = results.filter(ride => {
       const startMatch = !startLocation || 
         ride.startLocation.name === startLocation.name ||
@@ -130,16 +132,56 @@ const searchRides = (
         
       return startMatch && endMatch;
     });
+    
+    // If no direct routes or only a few direct routes found, look for indirect routes with transit
+    if (results.length < 2 && startLocation && endLocation) {
+      // Find rides that match the starting location
+      const potentialConnections = ridesData.filter(ride => 
+        ride.startLocation.name === startLocation.name ||
+        ride.startLocation.name.includes(startLocation.name)
+      );
+      
+      // For each potential connection, try to find a suitable transit option
+      potentialConnections.forEach(ride => {
+        // Skip if this ride is already in the results (direct match)
+        if (results.some(r => r.id === ride.id)) return;
+        
+        // Find a transit suggestion that connects the ride's end to the user's desired destination
+        const transitMatch = transitData.find(transit => 
+          (transit.from === ride.endLocation.name && 
+           (transit.to === endLocation.name || endLocation.name.includes(transit.to))) ||
+          (transit.from.includes(ride.endLocation.name) && 
+           (transit.to === endLocation.name || endLocation.name.includes(transit.to)))
+        );
+        
+        if (transitMatch) {
+          // Create a copy of the ride with the transit suggestion
+          const connectedRide: RideOffer = {
+            ...ride,
+            transitSuggestion: transitMatch
+          };
+          
+          indirectResults.push(connectedRide);
+        }
+      });
+    }
   }
+  
+  // Combine direct and indirect results
+  const combinedResults = [...results, ...indirectResults];
   
   // Apply sorting
   if (sortBy === 'fastest') {
-    results.sort((a, b) => a.estimatedDuration - b.estimatedDuration);
+    combinedResults.sort((a, b) => {
+      const aDuration = a.estimatedDuration + (a.transitSuggestion?.duration || 0);
+      const bDuration = b.estimatedDuration + (b.transitSuggestion?.duration || 0);
+      return aDuration - bDuration;
+    });
   } else if (sortBy === 'cheapest') {
-    results.sort((a, b) => a.cost - b.cost);
+    combinedResults.sort((a, b) => a.cost - b.cost);
   }
   
-  return results;
+  return combinedResults;
 };
 
 export const DatabaseService = {
