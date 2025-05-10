@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Bus, Clock, Walking } from 'lucide-react';
+import { Bus, Clock, Footprints } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TransitSuggestion } from '@/types';
 
@@ -42,7 +42,7 @@ const TransitCard: React.FC<TransitCardProps> = ({ transit, className }) => {
         <Clock className="h-3 w-3 mr-1" />
         <span>Departs: {transit.departureTime}</span>
         <div className="mx-2 h-1 w-1 rounded-full bg-gray-300"></div>
-        <Walking className="h-3 w-3 mr-1" />
+        <Footprints className="h-3 w-3 mr-1" />
         <span>{transit.walkingDistance} walking</span>
       </div>
       

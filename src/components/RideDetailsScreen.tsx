@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, CreditCard, User, Car, Calendar, MapPin, Star, Check, Bus, Walking } from 'lucide-react';
+import { ArrowLeft, Clock, CreditCard, User, Car, Calendar, MapPin, Star, Check, Bus, Footprints } from 'lucide-react';
 import { toast } from "sonner";
 import TransitCard from './TransitCard';
 
