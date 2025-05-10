@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/select';
 import RideCard from '@/components/RideCard';
 import RideDetailsScreen from '@/components/RideDetailsScreen';
+import PublicTransitOptions from '@/components/PublicTransitOptions';
 import { SortOption } from '@/context/AppContext';
 import { toast } from "sonner";
 
@@ -31,6 +32,7 @@ const FindRideScreen: React.FC = () => {
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showFilters, setShowFilters] = useState(false); // Initially hide filters
+  const [showPublicTransport, setShowPublicTransport] = useState(false);
   
   useEffect(() => {
     performSearch(); // Load all rides by default
@@ -64,6 +66,29 @@ const FindRideScreen: React.FC = () => {
     return <RideDetailsScreen />;
   }
 
+  if (showPublicTransport) {
+    return (
+      <div className="h-full flex flex-col">
+        <div className="z-30 p-4 flex items-center justify-between bg-appCard/80 backdrop-blur-md shadow-lg border-b border-appBorder">
+          <div className="flex items-center">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="mr-2 text-appTextSecondary hover:text-appPrimary hover:bg-appPrimary/10 rounded-full"
+              onClick={() => setShowPublicTransport(false)}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="font-semibold text-xl">Public Transit</h1>
+          </div>
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <PublicTransitOptions />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-full flex flex-col bg-appBackground text-appText">
       {/* Header */}
@@ -80,15 +105,26 @@ const FindRideScreen: React.FC = () => {
           <h1 className="font-semibold text-xl">Find a Ride</h1>
         </div>
         
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowFilters(!showFilters)}
-          className="text-xs flex items-center gap-1 bg-appPrimary/10 border-appPrimary text-appPrimary hover:bg-appPrimary/20"
-        >
-          <Filter className="h-3.5 w-3.5" />
-          {showFilters ? 'Hide Filters' : 'Show Filters'}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowPublicTransport(true)}
+            className="text-xs flex items-center gap-1 bg-appPrimary/10 border-appPrimary text-appPrimary hover:bg-appPrimary/20"
+          >
+            <Bus className="h-3.5 w-3.5" />
+            Public Transit
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+            className="text-xs flex items-center gap-1 bg-appPrimary/10 border-appPrimary text-appPrimary hover:bg-appPrimary/20"
+          >
+            <Filter className="h-3.5 w-3.5" />
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </Button>
+        </div>
       </div>
 
       {/* Filter & Form Section (collapsible) */}
