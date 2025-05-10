@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, CreditCard, User, Car, Calendar, MapPin, Star, Check, Bus, Footprints } from 'lucide-react';
+import { ArrowLeft, Clock, User, Car, Calendar, MapPin, Star, Check, Bus, Users as PassengerIcon, Tag, DollarSign } from 'lucide-react';
 import { toast } from "sonner";
 import TransitCard from './TransitCard';
 
@@ -13,180 +12,132 @@ const RideDetailsScreen: React.FC = () => {
 
   const handleBook = () => {
     toast.success("Ride booked successfully!", {
-      description: "The driver has been notified of your booking.",
+      description: `You've booked a ride with ${selectedRide.driverName}. Details sent to your notifications.`,
+      style: {
+        background: 'var(--appCard)',
+        color: 'var(--appText)',
+        border: '1px solid var(--appBorder)'
+      }
     });
-    setTimeout(() => {
-      setSelectedRide(null);
-    }, 2000);
+    // setTimeout(() => {
+    //   setSelectedRide(null); // Optionally go back or to a bookings screen
+    // }, 2500);
   };
 
   const hasTransit = !!selectedRide.transitSuggestion;
 
   return (
-    <div className="relative h-full flex flex-col bg-white/90 backdrop-blur-md animate-fade-in">
+    <div className="relative h-full flex flex-col bg-appBackground text-appText animate-fade-in">
       {/* Header */}
-      <div className="z-30 p-4 flex items-center bg-white/90 backdrop-blur-md shadow-sm">
+      <div className="z-30 p-4 flex items-center bg-appCard/80 backdrop-blur-md shadow-lg border-b border-appBorder">
         <Button 
           variant="ghost" 
           size="icon" 
-          className="mr-2"
+          className="mr-2 text-appTextSecondary hover:text-appPrimary hover:bg-appPrimary/10 rounded-full"
           onClick={() => setSelectedRide(null)}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="font-medium text-lg bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">Ride Details</h1>
+        <h1 className="font-semibold text-xl">Ride Details</h1>
       </div>
 
-      {/* Map Preview */}
-      <div className="h-52 bg-maps-blue/10 bg-[url('https://api.mapbox.com/styles/v1/mapbox/light-v11/static/55.2708,25.2048,10,0/600x400?access_token=pk.placeholder')] bg-cover bg-center relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-maps-blue/20 to-purple-500/20"></div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-white text-lg font-medium px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm">
-            {selectedRide.distance} km • {selectedRide.estimatedDuration} min
-            {hasTransit && (
-              <span className="ml-2 text-sm">
-                + {selectedRide.transitSuggestion?.duration} min transit
-              </span>
-            )}
-          </div>
+      {/* Map Preview - Placeholder or static image for now */}
+      <div className="h-56 bg-appCard border-b border-appBorder relative bg-cover bg-center"
+           style={{ backgroundImage: `url(https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/55.2708,25.2048,10,0/600x300?access_token=pk.placeholder&attribution=false&logo=false)` }}>
+        <div className="absolute inset-0 bg-gradient-to-t from-appBackground via-appBackground/70 to-transparent"></div>
+        <div className="absolute bottom-4 left-4 right-4 text-center">
+            <div className="text-white text-lg font-semibold px-4 py-2 rounded-lg bg-black/50 backdrop-blur-sm">
+                {selectedRide.distance} km • {selectedRide.estimatedDuration} min carpool
+                {hasTransit && <span className="block text-xs"> + {selectedRide.transitSuggestion?.duration} min transit</span>}
+            </div>
         </div>
-        <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/70 to-transparent"></div>
       </div>
 
-      <div className="flex-1 p-6 space-y-6 overflow-auto">
+      <div className="flex-1 p-6 space-y-6 overflow-y-auto">
         {/* Route Info */}
-        <div className="space-y-2">
+        <div className="space-y-3 bg-appCard p-5 rounded-xl border border-appBorder shadow-lg">
           <div className="flex items-start">
-            <div className="mt-1 mr-3">
-              <div className="h-4 w-4 rounded-full border-2 border-maps-blue bg-white shadow-glow"></div>
-              <div className="h-8 w-0.5 mx-auto bg-gradient-to-b from-maps-blue to-maps-blue/30"></div>
-              <div className="h-4 w-4 rounded-full bg-maps-orange shadow-glow"></div>
+            <div className="mt-1 mr-3 flex flex-col items-center">
+              <MapPin className="h-5 w-5 text-appPrimary" />
+              <div className="h-12 w-0.5 bg-appBorder my-1.5"></div>
+              <MapPin className="h-5 w-5 text-appAccent" />
               {hasTransit && (
                 <>
-                  <div className="h-8 w-0.5 mx-auto bg-gradient-to-b from-maps-orange/30 to-purple-500/70"></div>
-                  <div className="h-4 w-4 rounded-full bg-purple-500 shadow-glow"></div>
+                  <div className="h-10 w-0.5 bg-appBorder my-1.5"></div>
+                  <Bus className="h-5 w-5 text-purple-400" />
                 </>
               )}
             </div>
             <div className="flex-1">
               <div>
-                <div className="font-medium">{selectedRide.startLocation.name}</div>
-                <div className="text-xs text-maps-secondaryText">Carpool pickup location</div>
+                <div className="font-semibold text-appText">{selectedRide.startLocation.name}</div>
+                <div className="text-xs text-appTextSecondary">Carpool pickup</div>
               </div>
-              <div className="mt-3">
-                <div className="font-medium">{selectedRide.endLocation.name}</div>
-                <div className="text-xs text-maps-secondaryText">
-                  {hasTransit ? 'Carpool dropoff, transfer to public transport' : 'Destination'}
-                </div>
+              <div className="mt-4">
+                <div className="font-semibold text-appText">{selectedRide.endLocation.name}</div>
+                <div className="text-xs text-appTextSecondary">{hasTransit ? 'Carpool dropoff / Transit connection' : 'Final Destination'}</div>
               </div>
-              {hasTransit && (
-                <div className="mt-3">
-                  <div className="font-medium">{selectedRide.transitSuggestion?.to}</div>
-                  <div className="text-xs text-maps-secondaryText">Final destination</div>
+              {hasTransit && selectedRide.transitSuggestion && (
+                <div className="mt-4">
+                  <div className="font-semibold text-purple-400">{selectedRide.transitSuggestion.to}</div>
+                  <div className="text-xs text-appTextSecondary">Transit destination</div>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Ride Details */}
-        <div className="bg-white/60 backdrop-blur-sm rounded-xl p-5 space-y-4 border border-white/30 shadow-md">
-          <div className="text-lg font-medium mb-4 bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">Carpool Details</div>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex items-center text-maps-secondaryText">
-              <Clock className="h-4 w-4 mr-2.5 text-maps-blue" />
-              Departure Time
-            </div>
-            <div className="font-medium">{selectedRide.departureTime || "Flexible"}</div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex items-center text-maps-secondaryText">
-              <CreditCard className="h-4 w-4 mr-2.5 text-maps-blue" />
-              Cost per Person
-            </div>
-            <div className="font-medium text-amber-500">AED {selectedRide.cost}</div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex items-center text-maps-secondaryText">
-              <User className="h-4 w-4 mr-2.5 text-maps-blue" />
-              Available Seats
-            </div>
-            <div className="font-medium">{selectedRide.availableSeats} of {selectedRide.passengerCapacity}</div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex items-center text-maps-secondaryText">
-              <MapPin className="h-4 w-4 mr-2.5 text-maps-blue" />
-              Distance
-            </div>
-            <div className="font-medium">{selectedRide.distance} km</div>
-          </div>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex items-center text-maps-secondaryText">
-              <Clock className="h-4 w-4 mr-2.5 text-maps-blue" />
-              Est. Travel Time
-            </div>
-            <div className="font-medium">{selectedRide.estimatedDuration} min</div>
+        {/* Ride Details Section */}
+        <div className="bg-appCard p-5 rounded-xl border border-appBorder shadow-lg space-y-4">
+          <h3 className="text-lg font-semibold text-appPrimary mb-2">Carpool Details</h3>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+            <div className="flex items-center"><Clock className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Departure:</span> {selectedRide.departureTime || "Flexible"}</div></div>
+            <div className="flex items-center"><DollarSign className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Cost:</span> AED {selectedRide.cost}</div></div>
+            <div className="flex items-center"><PassengerIcon className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Seats:</span> {selectedRide.availableSeats} / {selectedRide.passengerCapacity}</div></div>
+            <div className="flex items-center"><Car className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Vehicle:</span> {selectedRide.carType}</div></div>
+            <div className="flex items-center"><MapPin className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Distance:</span> {selectedRide.distance} km</div></div>
+            <div className="flex items-center"><Clock className="h-4 w-4 mr-2 text-appAccent" /><div><span className="text-appTextSecondary">Time:</span> {selectedRide.estimatedDuration} min</div></div>
           </div>
         </div>
 
         {/* Transit Suggestion */}
-        {hasTransit && (
-          <div className="space-y-3">
-            <div className="text-lg font-medium bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Public Transit Connection
-            </div>
-            <TransitCard transit={selectedRide.transitSuggestion!} />
-            <div className="text-xs text-maps-secondaryText italic px-1">
-              After your carpool ride, continue to your final destination using this public transit option.
-            </div>
+        {hasTransit && selectedRide.transitSuggestion && (
+          <div className="bg-appCard p-5 rounded-xl border border-appBorder shadow-lg space-y-3">
+            <h3 className="text-lg font-semibold text-purple-400 mb-2">Public Transit Connection</h3>
+            <TransitCard transit={selectedRide.transitSuggestion} />
+            <p className="text-xs text-appTextSecondary italic px-1">
+              Continue your journey using this public transit option after your carpool.
+            </p>
           </div>
         )}
 
         {/* Driver Info */}
-        <div>
-          <h3 className="text-lg font-medium mb-4 bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">Driver Information</h3>
-          <div className="flex items-center bg-white/60 p-4 rounded-lg border border-white/30 shadow-sm">
-            <div className="h-16 w-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full flex items-center justify-center">
-              <User className="h-8 w-8 text-gray-500" />
+        <div className="bg-appCard p-5 rounded-xl border border-appBorder shadow-lg">
+          <h3 className="text-lg font-semibold text-appPrimary mb-3">Driver Information</h3>
+          <div className="flex items-center">
+            <div className="h-12 w-12 bg-appBorder rounded-full flex items-center justify-center mr-4">
+              <User className="h-6 w-6 text-appTextSecondary" />
             </div>
-            <div className="ml-4">
-              <div className="font-medium text-lg">{selectedRide.driverName}</div>
-              <div className="flex items-center mt-1">
-                <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
-                <span className="text-sm ml-1">{selectedRide.rating}</span>
-                <div className="mx-2 h-1 w-1 rounded-full bg-gray-300"></div>
-                <Car className="h-4 w-4 text-maps-secondaryText" />
-                <span className="text-sm ml-1">{selectedRide.carType}</span>
+            <div>
+              <div className="font-semibold text-lg text-appText">{selectedRide.driverName}</div>
+              <div className="flex items-center text-sm text-appTextSecondary mt-0.5">
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <span className="ml-1">{selectedRide.rating} average rating</span>
               </div>
             </div>
           </div>
         </div>
         
-        {/* Booking Button */}
+        {/* Booking Button - Sticky at bottom if screen too short, otherwise inline */}
+      </div>
+      <div className="p-4 bg-appCard border-t border-appBorder shadow-top-lg sticky bottom-0">
         <Button 
-          className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700
-                    text-white w-full h-14 mt-4 shadow-md hover:shadow-lg transform transition-all duration-300 hover:scale-[1.02]"
+          className="w-full bg-appAccent hover:bg-appAccentHover text-appBackground font-bold h-14 text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
           onClick={handleBook}
         >
-          <Check className="h-5 w-5 mr-2" />
-          Book This Ride
+          <Check className="h-5 w-5 mr-2.5" />
+          Book This Ride (AED {selectedRide.cost})
         </Button>
-        
-        {/* Total Journey Summary */}
-        {hasTransit && (
-          <div className="text-center text-sm text-maps-secondaryText">
-            <span className="block font-medium">Total Journey:</span>
-            <span>
-              {selectedRide.estimatedDuration + (selectedRide.transitSuggestion?.duration || 0)} min
-              ({selectedRide.estimatedDuration} min carpool + {selectedRide.transitSuggestion?.duration} min transit)
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Bus, Clock, Footprints } from 'lucide-react';
+import { Bus, Clock, Footprints, CalendarDays } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { TransitSuggestion } from '@/types';
 
@@ -12,43 +11,40 @@ interface TransitCardProps {
 const TransitCard: React.FC<TransitCardProps> = ({ transit, className }) => {
   return (
     <div className={cn(
-      "bg-white/80 backdrop-blur-sm border border-white/20 rounded-lg p-4 shadow-md",
-      "hover:shadow-lg transition-all duration-300 animate-fade-in",
+      "bg-appCard/50 border border-appBorder rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300",
+      "text-appTextSecondary",
       className
     )}>
-      <div className="flex items-center mb-2">
-        <div className="bg-maps-blue/10 p-2 rounded-full mr-3">
-          <Bus className="h-4 w-4 text-maps-blue animate-pulse" />
-        </div>
-        <div className="flex-1">
-          <div className="font-medium text-maps-text">
-            {transit.routeName}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center">
+          <div className="bg-purple-500/20 p-2.5 rounded-full mr-3">
+            <Bus className="h-5 w-5 text-purple-400" />
           </div>
-          <div className="text-xs text-maps-secondaryText">
-            {transit.from} → {transit.to}
+          <div>
+            <div className="font-semibold text-base text-purple-400">{transit.routeName}</div>
+            <div className="text-xs">{transit.from} → {transit.to}</div>
           </div>
         </div>
         <div className="text-right">
-          <div className="text-sm font-bold text-maps-orange">
-            {transit.duration} min
-          </div>
-          <div className="text-xs text-maps-secondaryText">
-            {transit.frequency}
-          </div>
+          <div className="text-lg font-bold text-appAccent">{transit.duration} min</div>
+          <div className="text-xs">{transit.frequency}</div>
         </div>
       </div>
       
-      <div className="flex items-center text-xs text-maps-secondaryText">
-        <Clock className="h-3 w-3 mr-1" />
-        <span>Departs: {transit.departureTime}</span>
-        <div className="mx-2 h-1 w-1 rounded-full bg-gray-300"></div>
-        <Footprints className="h-3 w-3 mr-1" />
-        <span>{transit.walkingDistance} walking</span>
+      <div className="grid grid-cols-2 gap-2 text-xs border-t border-appBorder pt-3">
+        <div className="flex items-center">
+          <CalendarDays className="h-3.5 w-3.5 mr-1.5 text-appPrimary" />
+          <span>Departs: {transit.departureTime}</span>
+        </div>
+        <div className="flex items-center">
+          <Footprints className="h-3.5 w-3.5 mr-1.5 text-appPrimary" />
+          <span>{transit.walkingDistance} walk</span>
+        </div>
       </div>
       
       {transit.notes && (
-        <div className="mt-2 text-xs italic text-maps-secondaryText">
-          {transit.notes}
+        <div className="mt-3 text-xs italic border-t border-appBorder pt-2">
+          <strong>Note:</strong> {transit.notes}
         </div>
       )}
     </div>

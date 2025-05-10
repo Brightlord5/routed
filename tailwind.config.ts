@@ -156,7 +156,7 @@ const config = {
 				'shimmer': 'shimmer 3s infinite linear'
 			},
 			fontFamily: {
-				sans: ["Nunito", "var(--font-sans)", ...fontFamily.sans],
+				sans: ["Quicksand", "var(--font-sans)", ...fontFamily.sans],
 			},
 			boxShadow: {
 				'glow': '0 0 10px rgba(66, 153, 225, 0.4)',

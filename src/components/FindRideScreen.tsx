@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Clock, Users, Search, SortAsc, CircleDollarSign, Bus, Zap } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Search, SortAsc, CircleDollarSign, Bus, Zap, Filter } from 'lucide-react';
 import LocationInput from '@/components/LocationInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,165 +30,113 @@ const FindRideScreen: React.FC = () => {
   } = useAppContext();
   
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [searchSubmitted, setSearchSubmitted] = useState(false);
+  const [showFilters, setShowFilters] = useState(false); // Initially hide filters
   
-  // Load all rides by default when component mounts
   useEffect(() => {
-    performSearch();
-    setSearchSubmitted(true);
-    toast.info("Showing available rides", { 
-      description: "Use filters to refine your search"
-    });
+    performSearch(); // Load all rides by default
+    // toast.info("Showing all available rides", { 
+    //   description: "Use filters to refine your search or tap a ride for details."
+    // });
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate form (make validation optional now)
-    const newErrors: Record<string, string> = {};
-    setErrors(newErrors);
-    
-    // Search for rides using the current filter
     performSearch();
-    setSearchSubmitted(true);
+    setShowFilters(false); // Hide filters after search
+    toast.success("Search updated!", {
+      description: searchResults.length > 0 ? `Found ${searchResults.length} rides.` : "No rides match your criteria."
+    });
   };
   
-  // Handle sort changes
   const handleSortChange = (newSortOption: SortOption) => {
     setSortOption(newSortOption);
     performSearch(newSortOption);
-    
-    // Show toast notification based on sort option
     if (newSortOption === 'fastest') {
       toast.success("Sorted by fastest travel time");
     } else if (newSortOption === 'cheapest') {
       toast.success("Sorted by lowest price");
     } else {
-      toast.success("Showing all available rides");
+      toast.info("Showing all available rides");
     }
   };
 
-  // If a ride is selected, show the ride details screen
   if (selectedRide) {
     return <RideDetailsScreen />;
   }
 
   return (
-    <div className="relative h-full flex flex-col">
+    <div className="relative h-full flex flex-col bg-appBackground text-appText">
       {/* Header */}
-      <div className="z-30 p-4 flex items-center justify-between bg-white/90 shadow-sm">
+      <div className="z-30 p-4 flex items-center justify-between bg-appCard/80 backdrop-blur-md shadow-lg border-b border-appBorder">
         <div className="flex items-center">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="mr-2"
+            className="mr-2 text-appTextSecondary hover:text-appPrimary hover:bg-appPrimary/10 rounded-full"
             onClick={() => setMode('home')}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="font-medium text-lg bg-gradient-to-r from-maps-blue to-purple-500 bg-clip-text text-transparent">Find a Ride</h1>
+          <h1 className="font-semibold text-xl">Find a Ride</h1>
         </div>
         
-        {/* Sort Options */}
-        <div className="flex gap-2">
-          <Button
-            variant={sortOption === null ? "default" : "outline"}
-            size="sm"
-            onClick={() => handleSortChange(null)}
-            className="text-xs flex items-center gap-1"
-          >
-            <SortAsc className="h-3 w-3" />
-            All
-          </Button>
-          <Button
-            variant={sortOption === 'fastest' ? "default" : "outline"}
-            size="sm"
-            onClick={() => handleSortChange('fastest')}
-            className="text-xs flex items-center gap-1"
-          >
-            <Zap className="h-3 w-3" />
-            Fastest
-          </Button>
-          <Button
-            variant={sortOption === 'cheapest' ? "default" : "outline"}
-            size="sm"
-            onClick={() => handleSortChange('cheapest')}
-            className="text-xs flex items-center gap-1"
-          >
-            <CircleDollarSign className="h-3 w-3" />
-            Cheapest
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowFilters(!showFilters)}
+          className="text-xs flex items-center gap-1 bg-appPrimary/10 border-appPrimary text-appPrimary hover:bg-appPrimary/20"
+        >
+          <Filter className="h-3.5 w-3.5" />
+          {showFilters ? 'Hide Filters' : 'Show Filters'}
+        </Button>
       </div>
 
-      {/* Form Card */}
-      <div className={`absolute inset-x-0 top-[72px] z-30 bg-white rounded-b-2xl shadow-lg p-6 transition-all ${searchSubmitted ? 'max-h-72 overflow-hidden' : ''}`}>
+      {/* Filter & Form Section (collapsible) */}
+      <div className={`z-20 bg-appCard shadow-xl transition-all duration-300 ease-in-out overflow-hidden ${showFilters ? 'max-h-[500px] p-6 border-b border-appBorder' : 'max-h-0'}`}>
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="startLocation">Starting Location</Label>
+              <Label htmlFor="startLocation" className="text-sm font-medium text-appTextSecondary mb-1 block">From</Label>
               <LocationInput
                 placeholder="Enter pickup location"
                 value={searchCriteria.startLocation}
-                onChange={(location) => 
-                  setSearchCriteria({...searchCriteria, startLocation: location})
-                }
-                className={errors.startLocation ? "border-destructive" : ""}
+                onChange={(location) => setSearchCriteria({...searchCriteria, startLocation: location})}
+                className={errors.startLocation ? "border-red-500" : ""} // Keep error styling if needed
               />
-              {errors.startLocation && (
-                <p className="text-destructive text-xs mt-1">{errors.startLocation}</p>
-              )}
             </div>
-            
             <div>
-              <Label htmlFor="endLocation">Destination</Label>
+              <Label htmlFor="endLocation" className="text-sm font-medium text-appTextSecondary mb-1 block">To</Label>
               <LocationInput
                 placeholder="Enter destination"
                 value={searchCriteria.endLocation}
-                onChange={(location) => 
-                  setSearchCriteria({...searchCriteria, endLocation: location})
-                }
-                className={errors.endLocation ? "border-destructive" : ""}
+                onChange={(location) => setSearchCriteria({...searchCriteria, endLocation: location})}
+                className={errors.endLocation ? "border-red-500" : ""}
               />
-              {errors.endLocation && (
-                <p className="text-destructive text-xs mt-1">{errors.endLocation}</p>
-              )}
             </div>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="arrivalTime">Desired Arrival Time</Label>
+              <Label htmlFor="arrivalTime" className="text-sm font-medium text-appTextSecondary mb-1 block">Arrival Time</Label>
               <div className="relative">
-                <Clock className="absolute left-3 top-3 h-4 w-4 text-maps-secondaryText" />
-                <Input
-                  id="arrivalTime"
-                  type="time"
-                  value={searchCriteria.desiredArrivalTime || ''}
-                  onChange={(e) => 
-                    setSearchCriteria({...searchCriteria, desiredArrivalTime: e.target.value})
-                  }
-                  className="pl-10"
-                />
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-appTextSecondary" />
+                <Input id="arrivalTime" type="time" value={searchCriteria.desiredArrivalTime || ''}
+                  onChange={(e) => setSearchCriteria({...searchCriteria, desiredArrivalTime: e.target.value})}
+                  className="pl-10 bg-appBackground border-appBorder focus:ring-appPrimary focus:border-appPrimary text-appText" />
               </div>
             </div>
-            
             <div>
-              <Label htmlFor="passengerCount">Number of Passengers</Label>
+              <Label htmlFor="passengerCount" className="text-sm font-medium text-appTextSecondary mb-1 block">Passengers</Label>
               <div className="relative">
-                <Users className="absolute left-3 top-3 h-4 w-4 text-maps-secondaryText" />
-                <Select
-                  value={searchCriteria.passengerCount.toString()}
-                  onValueChange={(value) => 
-                    setSearchCriteria({...searchCriteria, passengerCount: parseInt(value)})
-                  }
-                >
-                  <SelectTrigger className="pl-10">
+                <Users className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-appTextSecondary" />
+                <Select value={searchCriteria.passengerCount.toString()} 
+                  onValueChange={(value) => setSearchCriteria({...searchCriteria, passengerCount: parseInt(value)})}>
+                  <SelectTrigger className="pl-10 bg-appBackground border-appBorder focus:ring-appPrimary focus:border-appPrimary text-appText">
                     <SelectValue placeholder="Passengers" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-appCard border-appBorder text-appText">
                     {[1, 2, 3, 4, 5, 6].map((num) => (
-                      <SelectItem key={num} value={num.toString()}>
+                      <SelectItem key={num} value={num.toString()} className="hover:bg-appPrimary/20 focus:bg-appPrimary/30">
                         {num} {num === 1 ? 'passenger' : 'passengers'}
                       </SelectItem>
                     ))}
@@ -197,62 +145,34 @@ const FindRideScreen: React.FC = () => {
               </div>
             </div>
           </div>
-          
-          <Button 
-            type="submit"
-            className="bg-maps-green hover:bg-maps-green/90 text-white w-full h-12"
-          >
-            <Search className="h-5 w-5 mr-2" />
-            Search Rides
-          </Button>
-        </form>
-        
-        {searchSubmitted && (
-          <div className="pt-4 flex justify-center">
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setSearchSubmitted(false)}
-              className="text-maps-blue"
-            >
-              Edit Search
+
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex gap-2">
+              <Button type="button" variant={sortOption === null ? "default" : "outline"} size="sm" onClick={() => handleSortChange(null)} className={`text-xs ${sortOption === null ? 'bg-appPrimary text-white' : 'border-appBorder text-appTextSecondary hover:bg-appPrimary/10 hover:text-appPrimary'}`}><SortAsc className="h-3.5 w-3.5 mr-1" /> All</Button>
+              <Button type="button" variant={sortOption === 'fastest' ? "default" : "outline"} size="sm" onClick={() => handleSortChange('fastest')} className={`text-xs ${sortOption === 'fastest' ? 'bg-appPrimary text-white' : 'border-appBorder text-appTextSecondary hover:bg-appPrimary/10 hover:text-appPrimary'}`}><Zap className="h-3.5 w-3.5 mr-1" /> Fastest</Button>
+              <Button type="button" variant={sortOption === 'cheapest' ? "default" : "outline"} size="sm" onClick={() => handleSortChange('cheapest')} className={`text-xs ${sortOption === 'cheapest' ? 'bg-appPrimary text-white' : 'border-appBorder text-appTextSecondary hover:bg-appPrimary/10 hover:text-appPrimary'}`}><CircleDollarSign className="h-3.5 w-3.5 mr-1" /> Cheapest</Button>
+            </div>
+            <Button type="submit" className="bg-appAccent hover:bg-appAccentHover text-appBackground font-semibold h-10 px-6 rounded-lg">
+              <Search className="h-4 w-4 mr-2" /> Apply Filters
             </Button>
           </div>
-        )}
+        </form>
       </div>
 
-      {/* Results Section */}
-      {searchSubmitted && (
-        <div className="absolute inset-x-0 bottom-0 top-[270px] z-20 bg-white/70 backdrop-blur-sm rounded-t-2xl p-4 animate-fade-in">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium">
-              {searchResults.length > 0 
-                ? `${searchResults.length} Available Rides` 
-                : 'No Rides Found'}
-            </h2>
-            
-            {/* Transit Integration Badge */}
-            <div className="flex items-center bg-purple-100 px-2 py-1 rounded-full text-xs text-purple-700">
-              <Bus className="h-3 w-3 mr-1" />
-              <span>With Transit Options</span>
-            </div>
+      {/* Results Section - Takes remaining height */}
+      <div className="flex-1 overflow-y-auto p-4 pt-2 space-y-4">
+        {searchResults.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full text-appTextSecondary opacity-75">
+            <Search className="h-16 w-16 mb-4" />
+            <p className="text-lg font-semibold mb-2">No Rides Found</p>
+            <p className="text-sm text-center">Try adjusting your filters or check back later.</p>
           </div>
-          
-          {searchResults.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-maps-secondaryText">
-              <Search className="h-12 w-12 mb-4 text-gray-300" />
-              <p className="mb-2">No rides available for this route</p>
-              <p className="text-sm">Try changing your search criteria</p>
-            </div>
-          ) : (
-            <div className="space-y-4 overflow-y-auto h-[calc(100%-2.5rem)] pb-4 scrollable-cards">
-              {searchResults.map((ride) => (
-                <RideCard key={ride.id} ride={ride} />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+        ) : (
+          searchResults.map((ride) => (
+            <RideCard key={ride.id} ride={ride} />
+          ))
+        )}
+      </div>
     </div>
   );
 };
