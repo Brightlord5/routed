@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Clock, Users, Search } from 'lucide-react';
@@ -24,11 +24,52 @@ const FindRideScreen: React.FC = () => {
     setMode, 
     searchResults, 
     setSearchResults,
-    selectedRide
+    selectedRide,
+    lastPostedRide
   } = useAppContext();
   
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [searchSubmitted, setSearchSubmitted] = useState(false);
+
+  // Effect to update search results when lastPostedRide changes
+  useEffect(() => {
+    if (searchSubmitted && lastPostedRide) {
+      performSearch();
+    }
+  }, [lastPostedRide]);
+
+  // Extracted search logic to a reusable function
+  const performSearch = () => {
+    // Create a combined list of rides that includes mock rides and any user-posted rides
+    let availableRides = [...mockRides];
+    
+    // If there's a lastPostedRide, convert it to a RideOffer and add to available rides
+    if (lastPostedRide && lastPostedRide.startLocation && lastPostedRide.endLocation) {
+      const postedRide = {
+        id: 'user-posted-' + Date.now(),
+        driverName: 'You',
+        startLocation: lastPostedRide.startLocation,
+        endLocation: lastPostedRide.endLocation,
+        departureTime: lastPostedRide.departureTime,
+        passengerCapacity: lastPostedRide.passengerCapacity,
+        availableSeats: lastPostedRide.passengerCapacity,
+        cost: lastPostedRide.cost,
+        estimatedDuration: 25, // Default value
+        distance: 15.0, // Default value
+        carType: 'Your Car',
+        rating: 5.0,
+      };
+      availableRides.unshift(postedRide); // Add to the beginning of the array
+    }
+    
+    // Filter rides based on search criteria
+    setSearchResults(availableRides.filter(ride => 
+      (ride.startLocation.name === searchCriteria.startLocation?.name ||
+       ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
+      (ride.endLocation.name === searchCriteria.endLocation?.name ||
+       ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
+    ));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,13 +89,7 @@ const FindRideScreen: React.FC = () => {
     
     // If no errors, search for rides
     if (Object.keys(newErrors).length === 0) {
-      // Simulate search with mock data
-      setSearchResults(mockRides.filter(ride => 
-        (ride.startLocation.name === searchCriteria.startLocation?.name ||
-         ride.startLocation.name.includes(searchCriteria.startLocation?.name || '')) &&
-        (ride.endLocation.name === searchCriteria.endLocation?.name ||
-         ride.endLocation.name.includes(searchCriteria.endLocation?.name || ''))
-      ));
+      performSearch();
       setSearchSubmitted(true);
     }
   };
@@ -208,4 +243,3 @@ const FindRideScreen: React.FC = () => {
 };
 
 export default FindRideScreen;
-

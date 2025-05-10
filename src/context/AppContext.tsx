@@ -48,6 +48,25 @@ export const transitSuggestions: TransitSuggestion[] = [
     duration: 15,
     frequency: 'Every 20 min',
     walkingDistance: '200m'
+  },
+  {
+    routeName: 'Bus 36A',
+    from: 'DIFC',
+    to: 'Dubai Mall',
+    departureTime: '2:52 PM',
+    duration: 13,
+    frequency: 'Every 30 min',
+    walkingDistance: '200m'
+  },
+  {
+    routeName: 'Metro Red Line',
+    from: 'Business Bay',
+    to: 'Dubai Marina',
+    departureTime: '2:40 PM',
+    duration: 22,
+    frequency: 'Every 7 min',
+    walkingDistance: '300m',
+    notes: 'Exit at Dubai Marina station'
   }
 ];
 
@@ -95,7 +114,8 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 20,
     distance: 11.8,
     carType: 'Sedan',
-    rating: 4.9
+    rating: 4.9,
+    transitSuggestion: transitSuggestions[3] // Bus 36A from DIFC to Dubai Mall
   },
   {
     id: '4',
