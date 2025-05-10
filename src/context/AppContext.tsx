@@ -1,5 +1,6 @@
+
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { AppMode, RideOffer, SearchCriteria, PostRideData } from '@/types';
+import { AppMode, RideOffer, SearchCriteria, PostRideData, TransitSuggestion } from '@/types';
 
 // Mock data for Dubai locations
 export const dubaiLocations = [
@@ -13,6 +14,41 @@ export const dubaiLocations = [
   { name: 'Deira', coordinates: [55.3075, 25.2697] as [number, number] },
   { name: 'Business Bay', coordinates: [55.2627, 25.1851] as [number, number] },
   { name: 'Downtown Dubai', coordinates: [55.2735, 25.1933] as [number, number] },
+  { name: 'Al Quoz', coordinates: [55.2400, 25.1300] as [number, number] },
+  { name: 'Dubai Internet City', coordinates: [55.1571, 25.0953] as [number, number] },
+];
+
+// Mock data for transit suggestions
+export const transitSuggestions: TransitSuggestion[] = [
+  {
+    routeName: 'Bus 50',
+    from: 'Business Bay',
+    to: 'Al Quoz',
+    departureTime: '8:45 AM',
+    duration: 20,
+    frequency: 'Every 30 min',
+    walkingDistance: '150m',
+    notes: 'Last departure at 11:45 PM'
+  },
+  {
+    routeName: 'Red Line Metro',
+    from: 'Dubai Mall',
+    to: 'Internet City',
+    departureTime: '9:10 AM',
+    duration: 25,
+    frequency: 'Every 7 min',
+    walkingDistance: '350m',
+    notes: 'Exit at Dubai Internet City station'
+  },
+  {
+    routeName: 'Bus 28',
+    from: 'Palm Jumeirah',
+    to: 'Dubai Marina',
+    departureTime: '10:15 AM',
+    duration: 15,
+    frequency: 'Every 20 min',
+    walkingDistance: '200m'
+  }
 ];
 
 // Mock data for available rides
@@ -29,21 +65,23 @@ export const mockRides: RideOffer[] = [
     estimatedDuration: 25,
     distance: 12.3,
     carType: 'Sedan',
-    rating: 4.8
+    rating: 4.8,
+    transitSuggestion: transitSuggestions[2] // Bus 28 from Palm Jumeirah to Dubai Marina
   },
   {
     id: '2',
     driverName: 'Fatima',
-    startLocation: dubaiLocations[4], // JVC
-    endLocation: dubaiLocations[1], // Burj Khalifa
+    startLocation: dubaiLocations[3], // Dubai Mall
+    endLocation: dubaiLocations[8], // Business Bay
     departureTime: '08:30',
     passengerCapacity: 3,
     availableSeats: 2,
     cost: 15,
-    estimatedDuration: 30,
-    distance: 18.5,
+    estimatedDuration: 15,
+    distance: 5.8,
     carType: 'SUV',
-    rating: 4.5
+    rating: 4.5,
+    transitSuggestion: transitSuggestions[0] // Bus 50 from Business Bay to Al Quoz
   },
   {
     id: '3',
@@ -76,16 +114,17 @@ export const mockRides: RideOffer[] = [
   {
     id: '5',
     driverName: 'Khalid',
-    startLocation: dubaiLocations[8], // Business Bay
-    endLocation: dubaiLocations[3], // Dubai Mall
+    startLocation: dubaiLocations[3], // Dubai Mall
+    endLocation: dubaiLocations[11], // Dubai Internet City
     departureTime: '09:15',
     passengerCapacity: 2,
     availableSeats: 1,
-    cost: 8,
-    estimatedDuration: 10,
-    distance: 5.2,
+    cost: 20,
+    estimatedDuration: 22,
+    distance: 15.5,
     carType: 'Compact',
-    rating: 4.6
+    rating: 4.6,
+    transitSuggestion: transitSuggestions[1] // Red Line Metro from Dubai Mall to Internet City
   },
 ];
 

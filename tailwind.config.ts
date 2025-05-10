@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Google Maps inspired colors
+				// Enhanced color palette
 				maps: {
 					blue: '#4285F4',
 					green: '#34C759',
@@ -72,6 +72,12 @@ export default {
 					secondaryText: '#5F6368',
 					background: '#F8F9FA',
 					lightGray: '#E0E0E0',
+				},
+				neon: {
+					green: '#39FF14',
+					coral: '#FF6F61',
+					gold: '#FFD700',
+					purple: '#800080',
 				}
 			},
 			borderRadius: {
@@ -115,16 +121,45 @@ export default {
 						opacity: '1',
 						transform: 'scale(1)'
 					}
+				},
+				'pulse-glow': {
+					'0%': {
+						boxShadow: '0 0 5px rgba(66, 133, 244, 0.5)'
+					},
+					'50%': {
+						boxShadow: '0 0 20px rgba(66, 133, 244, 0.8)'
+					},
+					'100%': {
+						boxShadow: '0 0 5px rgba(66, 133, 244, 0.5)'
+					}
+				},
+				'shimmer': {
+					'0%': {
+						backgroundPosition: '-200% 0'
+					},
+					'100%': {
+						backgroundPosition: '200% 0'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
-				'scale-in': 'scale-in 0.2s ease-out'
+				'scale-in': 'scale-in 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s infinite ease-in-out',
+				'shimmer': 'shimmer 3s infinite linear'
 			},
 			fontFamily: {
 				'roboto': ['Roboto', 'sans-serif'],
+			},
+			boxShadow: {
+				'glow': '0 0 15px rgba(66, 133, 244, 0.5)',
+				'glow-lg': '0 0 30px rgba(66, 133, 244, 0.8)',
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'gradient-shimmer': 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent)',
 			}
 		}
 	},

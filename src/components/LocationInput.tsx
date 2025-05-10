@@ -42,19 +42,21 @@ const LocationInput: React.FC<LocationInputProps> = ({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            "w-full justify-between border-0 bg-gray-50 hover:bg-gray-100",
-            "shadow-none text-left h-12 relative pl-10",
+            "w-full justify-between border-0 bg-white/80 hover:bg-white/90 backdrop-blur-sm",
+            "shadow-md text-left h-12 relative pl-10 transition-all duration-300",
+            "border border-white/20 hover:border-white/40",
+            "focus:ring-2 focus:ring-maps-blue/30 animate-fade-in",
             className
           )}
         >
-          <MapPin className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-maps-secondaryText" />
+          <MapPin className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-maps-blue transition-colors duration-300" />
           <span className={cn("truncate", !value && "text-muted-foreground")}>
             {value ? value.name : placeholder}
           </span>
-          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 transition-transform duration-300 group-hover:rotate-180" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[calc(100vw-2rem)] p-0 max-w-md z-50">
+      <PopoverContent className="w-[calc(100vw-2rem)] p-0 max-w-md z-50 bg-white/90 backdrop-blur-md border border-white/30 shadow-xl animate-scale-in">
         <Command>
           <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} />
           <CommandList>
@@ -71,15 +73,15 @@ const LocationInput: React.FC<LocationInputProps> = ({
                     });
                     setOpen(false);
                   }}
-                  className="flex items-center"
+                  className="flex items-center hover:bg-maps-blue/10 transition-colors duration-200"
                 >
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2 h-4 w-4 text-maps-blue transition-opacity duration-200",
                       value?.name === location.name ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  <MapPin className="h-4 w-4 mr-2 text-maps-secondaryText" />
+                  <MapPin className="h-4 w-4 mr-2 text-maps-blue" />
                   {location.name}
                 </CommandItem>
               ))}
